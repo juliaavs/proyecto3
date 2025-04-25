@@ -1,6 +1,7 @@
 // server.js
 const express = require('express');
 const cors = require('cors');
+<<<<<<< HEAD
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -32,3 +33,21 @@ app.post('/api/login', (req, res) => {
 });
 
 app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
+=======
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middlewares
+app.use(cors()); // Para evitar el error de CORS
+app.use(express.json()); // Para manejar JSON en las peticiones
+
+// Ruta de prueba
+app.get('/', (req, res) => {
+  res.send('Backend funcionando correctamente');
+});
+
+// Iniciar el servidor
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+});
+>>>>>>> ddd8bec (cambios)
