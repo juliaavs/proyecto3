@@ -1,16 +1,69 @@
 // server.js
+
 const express = require('express');
 const cors = require('cors');
-<<<<<<< HEAD
-const bodyParser = require('body-parser');
-
 const app = express();
-const PORT = 5000;
 
+app.use(express.json());
 app.use(cors());
+
+
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+
+const PORT = 3001;
+
 app.use(bodyParser.json());
 
+
+
+// Conexión a MongoDB
+mongoose.connect('mongodb://localhost:27017/proyecto3', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+// Esquema de Película
+const PeliculaSchema = new mongoose.Schema({
+  nombre: String,
+  comentario: String,
+  puntuacion: Number,
+  duracion: String,
+});
+
+const Pelicula = mongoose.model('Pelicula', PeliculaSchema);
+
+// Ruta POST para añadir una película
+app.post('/api/peliculas', async (req, res) => {
+  const { nombre, comentario, puntuacion, duracion } = req.body;
+
+  try {
+    const nuevaPelicula = new Pelicula({ nombre, comentario, puntuacion, duracion });
+    await nuevaPelicula.save();
+    res.status(201).json({ message: 'Película guardada' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al guardar la película', error });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const users = []; // aquí se guardan usuarios temporalmente
+
+app.get('/', (req, res) => {
+  res.send('Backend funcionando');
+});
 
 app.post('/api/register', (req, res) => {
   const { name, email, password } = req.body;
@@ -33,21 +86,3 @@ app.post('/api/login', (req, res) => {
 });
 
 app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
-=======
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-// Middlewares
-app.use(cors()); // Para evitar el error de CORS
-app.use(express.json()); // Para manejar JSON en las peticiones
-
-// Ruta de prueba
-app.get('/', (req, res) => {
-  res.send('Backend funcionando correctamente');
-});
-
-// Iniciar el servidor
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
-});
->>>>>>> ddd8bec (cambios)
