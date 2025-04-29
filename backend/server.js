@@ -1,34 +1,85 @@
 // server.js
 const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-
+const cors = require('cors');  // Importamos cors
 const app = express();
-const PORT = 5000;
+const router = require('./routes/routes'); // O donde tengas tus rutas
+const bcrypt = require('bcrypt');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const corsOptions = {
+  origin: 'http://localhost:3000',  // Asegúrate de que este sea el puerto donde corre tu frontend
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Métodos permitidos
+  allowedHeaders: ['Content-Type'],  // Headers permitidos
+};
 
-app.use(cors());
+
+const PORT = 3001;
+
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use('/api', router);
 app.use(bodyParser.json());
 
-const users = []; // aquí se guardan usuarios temporalmente
 
-app.post('/api/register', (req, res) => {
-  const { name, email, password } = req.body;
-  if (users.find(u => u.email === email)) {
-    return res.status(400).json({ message: 'El usuario ya existe' });
+
+// Conectar a MongoDB
+mongoose.connect('mongodb://localhost:27017/ProyectoFinal', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('MongoDB conectado'))
+.catch((err) => console.error('Error de conexión a MongoDB:', err));
+
+
+app.post('/api/register', async (req, res) => {
+  try {
+    const { nombre, email, password } = req.body;
+
+    // Encriptar contraseña
+    const passwordEncriptada = await bcrypt.hash(password, 10); // 10 rondas de sal
+
+    const newUsuario = new Usuario({ 
+      nombre, 
+      email, 
+      password: passwordEncriptada 
+    });
+
+    await newUsuario.save();
+
+    res.status(201).json({ mensaje: 'Usuario registrado exitosamente' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al registrar el usuario' });
   }
-
-  users.push({ name, email, password });
-  res.json({ message: 'PRRRRRRR Bicus Dicus De Bicus De Dicus' });
 });
 
-app.post('/api/login', (req, res) => {
-  const { email, password } = req.body;
-  const user = users.find(u => u.email === email && u.password === password);
-  if (!user) {
-    return res.status(401).json({ message: 'Credenciales inválidas' });
-  }
+app.post('/api/', async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-  res.json({ message: `Bienvenido, ${user.name}` });
+    // Buscar el usuario por correo
+    const usuario = await Usuario.findOne({ email });
+    if (!usuario) {
+      return res.status(400).json({ mensaje: 'El correo electrónico no está registrado' });
+    }
+
+    // Comparar contraseñas
+    const passwordValida = await bcrypt.compare(password, usuario.password);
+    if (!passwordValida) {
+      return res.status(400).json({ mensaje: 'Contraseña incorrecta' });
+    }
+
+    // Si todo está bien
+    res.json({ mensaje: 'Inicio de sesión exitoso', usuario: usuario.nombre });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al iniciar sesión' });
+  }
 });
+
+
+
+app.use("/api/usuarios", require("./routes/usuarios"));
+
 
 app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
