@@ -83,7 +83,7 @@ app.post('/api/peliculas', upload.single('imagen'), async (req, res) => {
 
   const { nombre, comentario, puntuacion, duracion,director,genero } = req.body;
   const imagen = req.file ? '/uploads/' + req.file.filename : null;
-
+});
 app.post('/api/usuarios/register', async (req, res) => {
   try {
     const nuevaPelicula = new Pelicula({ nombre, comentario, puntuacion, duracion,director,genero, imagen });
