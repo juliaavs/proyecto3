@@ -23,7 +23,7 @@ router.post("/register", async (req, res) => {
 
 // Ruta para inciar sesion
 
-router.post("/", async (req, res) => {
+router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
     // Buscar al usuario por email (asegúrate de que tu modelo está utilizando email como campo único)
