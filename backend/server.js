@@ -1,6 +1,6 @@
 // server.js
 const express = require('express');
-const cors = require('cors');
+const cors = require('cors');  // Importamos cors
 const app = express();
 
 const multer = require('multer');
@@ -18,18 +18,30 @@ app.use('/uploads', express.static('uploads'));
 
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const corsOptions = {
+  origin: 'http://localhost:3000',  // Asegúrate de que este sea el puerto donde corre tu frontend
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Métodos permitidos
+  allowedHeaders: ['Content-Type'],  // Headers permitidos
+};
 
-const PORT = 3001;
 
+const PORT = 5000;
+
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use('/api', router);
 app.use(bodyParser.json());
 
 
 
-// Conexión a MongoDB
-mongoose.connect('mongodb://localhost:27017/proyecto3', {
+// Conectar a MongoDB
+mongoose.connect('mongodb://localhost:27017/ProyectoFinal', {
   useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+  useUnifiedTopology: true
+})
+.then(() => console.log('MongoDB conectado'))
+.catch((err) => console.error('Error de conexión a MongoDB:', err));
 
 
 // Configuración de multer
@@ -72,12 +84,38 @@ app.post('/api/peliculas', upload.single('imagen'), async (req, res) => {
   const { nombre, comentario, puntuacion, duracion,director,genero } = req.body;
   const imagen = req.file ? '/uploads/' + req.file.filename : null;
 
+app.post('/api/usuarios/register', async (req, res) => {
   try {
     const nuevaPelicula = new Pelicula({ nombre, comentario, puntuacion, duracion,director,genero, imagen });
     await nuevaPelicula.save();
     res.status(201).json({ message: 'Película guardada' });
   } catch (error) {
-    res.status(500).json({ message: 'Error al guardar la película', error });
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al registrar el usuario' });
+  }
+});
+
+app.post('/api/usuarios/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Buscar el usuario por correo
+    const usuario = await Usuario.findOne({ email });
+    if (!usuario) {
+      return res.status(400).json({ mensaje: 'El correo electrónico no está registrado' });
+    }
+
+    // Comparar contraseñas
+    const passwordValida = await bcrypt.compare(password, usuario.password);
+    if (!passwordValida) {
+      return res.status(400).json({ mensaje: 'Contraseña incorrecta' });
+    }
+
+    // Si todo está bien
+    res.json({ mensaje: 'Inicio de sesión exitoso', usuario: usuario.nombre });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al iniciar sesión' });
   }
 });
 
@@ -91,6 +129,7 @@ app.get('/api/peliculas', async (req, res) => {
 });
 
 
+app.use("/api/usuarios", require("./routes/usuarios"));
 
 // Ruta para obtener una película por su ID
 app.get('/api/peliculas/:id', async (req, res) => {

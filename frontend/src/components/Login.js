@@ -1,45 +1,54 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
+
+// Componente de inicio de sesión
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [LoginData, setLoginData] = useState({
+    correoElectronico: '',
+    contrasena: ''
+  });
+  const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  // Maneja el cambio de los campos de entradabv
+
+  const handleChange = (e) => {
+    setLoginData({ ...LoginData, [e.target.name]: e.target.value });
+  };
+
+  // Maneja el envío del formulario
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const res = await fetch('http://localhost:3001/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
-
-    const data = await res.json();
-    if (res.ok) {
-      alert(data.message);
-    } else {
-      alert(data.message);
+    try {
+      const respuesta = await fetch('http://localhost:5000/api/usuarios/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(LoginData),
+      });
+      const data = await respuesta.json();
+      
+      if (respuesta.ok) {
+        alert(`¡Bienvenido, ${data.usuario}!`);
+        // Almacena el nombre de usuario en sessionStorage
+        sessionStorage.setItem('userName', data.usuario);
+         // Redirige a la página principal después de un inicio de sesión exitoso
+        navigate('/home');
+      } else {
+        alert(`Error: ${data.error}`);
+      }
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+      alert('Hubo un error al iniciar sesión.');
     }
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <h2>Iniciar Sesión</h2>
-      <input
-        type="email"
-        placeholder="Correo electrónico"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Contraseña"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-      <button type="submit">Entrar</button>
+    <form onSubmit={handleSubmit}>
+      <h1>Inicio de Sesión</h1>
+      <input type="email" name="email" placeholder="Correo electrónico" onChange={handleChange} />
+      <input type="password" name="password" placeholder="Contraseña" onChange={handleChange} />
+      <button type="submit">Iniciar Sesión</button>
       <p>¿No tienes cuenta? <Link to="/register">Regístrate aquí</Link></p>
     </form>
   );
