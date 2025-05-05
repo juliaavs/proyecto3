@@ -39,7 +39,7 @@ function EditarPelicula() {
       body: data
     })
       .then(res => res.json())
-      .then(() => navigate('/'))
+      .then(() => navigate('/home'))
       .catch(err => console.error('Error al actualizar película:', err));
   };
 

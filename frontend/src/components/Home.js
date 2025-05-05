@@ -36,6 +36,7 @@ const Home = () => {
             />
           
             )}
+       
             <div className="pelicula-contenido">
             <p><strong>Nombre:</strong> {peli.nombre}</p>
               <p><strong>Comentario:</strong> {peli.comentario}</p>
@@ -43,6 +44,10 @@ const Home = () => {
               <p><strong>Duración:</strong> {peli.duracion} min</p>
               <p><strong>Género:</strong> {peli.genero}</p>
               <p><strong>Director/a:</strong> {peli.director}</p>
+                     {/* Botón para editar */}
+          <Link to={`/editar-pelicula/${peli._id}`}>
+            <button>Editar</button>
+          </Link>
             </div>
           </div>
         ))}
