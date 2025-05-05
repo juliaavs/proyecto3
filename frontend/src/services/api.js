@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiUrl = 'http://localhost:5000/api';  // Cambia esto si tu backend tiene otro puerto o URL
+const apiUrl = 'http://localhost:3001/api';  // Cambia esto si tu backend tiene otro puerto o URL
 
 // Crear un usuario
 export const crearUsuario = async (usuarioData) => {
