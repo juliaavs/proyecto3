@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiUrl = 'http://localhost:5000/api';  // Cambia esto si tu backend tiene otro puerto o URL
+const apiUrl = 'http://localhost:3001/api';  // Cambia esto si tu backend tiene otro puerto o URL
 
 // Crear un usuario
 export const crearUsuario = async (usuarioData) => {
@@ -20,6 +20,22 @@ export const iniciarSesion = async (loginData) => {
     return response.data;
   } catch (error) {
     console.error("Error al iniciar sesión", error);
+    throw error;
+  }
+};
+
+
+//añadir pelis
+export const añadirPelicula = async (peliculaData) => {
+  try {
+    const response = await axios.post(`${apiUrl}/peliculas`, peliculaData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error al añadir película", error);
     throw error;
   }
 };

@@ -1,47 +1,41 @@
 // server.js
 const express = require('express');
-const cors = require('cors');  // Importamos cors
-const app = express();
-
-const multer = require('multer');
-const path = require('path');
-
-
-app.use(cors());
-app.use(express.json());
-
-
-//imagen hacer la carpeta publica
-app.use('/uploads', express.static('uploads'));
-
-
-
-const bodyParser = require('body-parser');
+const cors = require('cors');
 const mongoose = require('mongoose');
+const path = require('path');
+const multer = require('multer');
+const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
-const corsOptions = {
-  origin: 'http://localhost:3000',  // Asegúrate de que este sea el puerto donde corre tu frontend
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Métodos permitidos
-  allowedHeaders: ['Content-Type'],  // Headers permitidos
-};
+const router = require('./routes/routes');
 
+const app = express();
+const PORT = 3001;
 
-const PORT = 5000;
+// Configuración de middleware
+app.use(cors({
+  origin: 'http://localhost:3000',  // Puerto donde corre el frontend
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type']
+}));
 
-app.use(cors(corsOptions));
 app.use(express.json());
-app.use('/api', router);
+app.use(express.urlencoded({ extended: true })); // Para manejar formularios codificados
 app.use(bodyParser.json());
+app.use('/uploads', express.static('uploads'));
+app.use('/api', router);
 
 
 
-// Conectar a MongoDB
+// Conexión a MongoDB
 mongoose.connect('mongodb://localhost:27017/ProyectoFinal', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
 .then(() => console.log('MongoDB conectado'))
 .catch((err) => console.error('Error de conexión a MongoDB:', err));
+
+// Importar modelo de Película
+const Pelicula = require('./models/Pelicula');
 
 
 // Configuración de multer
@@ -61,34 +55,58 @@ const upload = multer({ storage });
 
 
 
+app.post('/api/peliculas/add', upload.single('imagen'), async (req, res) => {
+  try {
+    console.log('req.body:', req.body);
+    console.log('req.file:', req.file);
+    // Asegúrate de que los datos estén disponibles en req.body
+    const { nombre, comentario, puntuacion, duracion, director, genero } = req.body;
+    const imagen = req.file ? '/uploads/' + req.file.filename : null;
 
+    // Verifica que los campos obligatorios estén presentes
+    if (!nombre || !comentario || !puntuacion || !duracion || !director || !genero) {
+      return res.status(400).json({ mensaje: 'Todos los campos son obligatorios' });
+    }
 
-// Esquema de Película
-const PeliculaSchema = new mongoose.Schema({
-  nombre: String,
-  comentario: String,
-  puntuacion: Number,
-  duracion: String,
-  genero: String,
-  director: String,
-  imagen: String
+    // Crea una nueva película
+    const nuevaPelicula = new Pelicula({
+      nombre,
+      comentario,
+      puntuacion,
+      duracion,
+      director,
+      genero,
+      imagen,
+    });
+
+    const peliculaGuardada = await nuevaPelicula.save();
+    console.log('Película guardada:', peliculaGuardada);
+
+    res.status(201).json({ mensaje: 'Película creada correctamente', pelicula: peliculaGuardada });
+  } catch (error) {
+    console.error('Error al guardar en la base de datos:', error);
+    res.status(500).json({ mensaje: 'Error del servidor al guardar la película', error });
+  }
 });
 
-const Pelicula = mongoose.model('Pelicula', PeliculaSchema);
 
 
-// Ruta POST para añadir una película
-app.post('/api/peliculas', upload.single('imagen'), async (req, res) => {
-
-
-  const { nombre, comentario, puntuacion, duracion,director,genero } = req.body;
-  const imagen = req.file ? '/uploads/' + req.file.filename : null;
-});
 app.post('/api/usuarios/register', async (req, res) => {
   try {
-    const nuevaPelicula = new Pelicula({ nombre, comentario, puntuacion, duracion,director,genero, imagen });
-    await nuevaPelicula.save();
-    res.status(201).json({ message: 'Película guardada' });
+    const { nombre, email, password } = req.body;
+
+    // Encriptar contraseña
+    const passwordEncriptada = await bcrypt.hash(password, 10); // 10 rondas de sal
+
+    const newUsuario = new Usuario({ 
+      nombre, 
+      email, 
+      password: passwordEncriptada 
+    });
+
+    await newUsuario.save();
+
+    res.status(201).json({ mensaje: 'Usuario registrado exitosamente' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ mensaje: 'Error al registrar el usuario' });
@@ -190,6 +208,7 @@ app.get('/', (req, res) => {
   res.send('Backend funcionando');
 });
 
+/*
 app.post('/api/register', (req, res) => {
   const { name, email, password } = req.body;
   if (users.find(u => u.email === email)) {
@@ -209,5 +228,6 @@ app.post('/api/login', (req, res) => {
 
   res.json({ message: `Bienvenido, ${user.name}` });
 });
+*/
 
 app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));

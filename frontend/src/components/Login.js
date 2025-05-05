@@ -21,7 +21,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const respuesta = await fetch('http://localhost:5000/api/usuarios/login', {
+      const respuesta = await fetch('http://localhost:3001/api/usuarios/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(LoginData),
@@ -30,6 +30,8 @@ function Login() {
       
       if (respuesta.ok) {
         alert(`¡Bienvenido, ${data.usuario}!`);
+        console.log('Usuario autenticado:', data.usuario);
+
         // Almacena el nombre de usuario en sessionStorage
         sessionStorage.setItem('userName', data.usuario);
          // Redirige a la página principal después de un inicio de sesión exitoso
