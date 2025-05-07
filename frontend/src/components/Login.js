@@ -30,6 +30,8 @@ function Login() {
       
       if (respuesta.ok) {
         alert(`¡Bienvenido, ${data.usuario}!`);
+        console.log('Usuario autenticado:', data.usuario);
+
         // Almacena el nombre de usuario en sessionStorage
         sessionStorage.setItem('userName', data.usuario);
          // Redirige a la página principal después de un inicio de sesión exitoso

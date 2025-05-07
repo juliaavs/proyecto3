@@ -1,12 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const Usuario = require("../models/Usuario");
 
 // Ruta para crear un usuario
 router.post("/register", async (req, res) => {
   const { nombre, email, password } = req.body;
   try {
+    console.log('Datos recibidos:', req.body); // 👈 Verifica que los datos llegan bien
     const salt = await bcrypt.genSalt(10); // Generar un "salt"
     const hashedPassword = await bcrypt.hash(password, salt); // Encriptar la contraseña
     const nuevoUsuario = new Usuario({

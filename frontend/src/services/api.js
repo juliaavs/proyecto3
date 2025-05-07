@@ -25,4 +25,20 @@ export const iniciarSesion = async (loginData) => {
 };
 
 
+//añadir pelis
+export const añadirPelicula = async (peliculaData) => {
+  try {
+    const response = await axios.post(`${apiUrl}/peliculas`, peliculaData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error al añadir película", error);
+    throw error;
+  }
+};
+
+
 
