@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 
 import './Pelicula.css'; // Asegúrate de importar tu archivo CSS
 
+
+
+
 const Home = () => {
   const userName = sessionStorage.getItem('userName') || 'Usuario';
   const [peliculas, setPeliculas] = useState([]);
@@ -13,6 +16,22 @@ const Home = () => {
       .then(data => setPeliculas(data))
       .catch(err => console.error('Error al obtener películas:', err));
   }, []);
+  const handleDelete = (id) => {
+    if (window.confirm('¿Estás seguro de que deseas eliminar esta película?')) {
+      fetch(`http://localhost:3001/api/peliculas/${id}`, {
+        method: 'DELETE',
+      })
+        .then((res) => {
+          if (res.ok) {
+            alert('Película eliminada correctamente');
+            setPeliculas(peliculas.filter((peli) => peli._id !== id)); // Actualiza el estado local
+          } else {
+            alert('Error al eliminar la película');
+          }
+        })
+        .catch((err) => console.error('Error al eliminar película:', err));
+    }
+  };
 
   return (
     <div style={{ textAlign: 'center', padding: '20px' }}>
@@ -48,6 +67,8 @@ const Home = () => {
           <Link to={`/editar-pelicula/${peli._id}`}>
             <button>Editar</button>
           </Link>
+          <button onClick={() => handleDelete(peli._id)}>Eliminar</button>
+
             </div>
           </div>
         ))}
