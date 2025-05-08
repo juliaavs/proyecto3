@@ -5,18 +5,23 @@ import { useNavigate } from 'react-router-dom';
 
 function AddPelicula() {
   const navigate = useNavigate();
+  const [usuarioId, setUsuarioId] = useState(null);
 
-  
   useEffect(() => {
-    
-    const userName = sessionStorage.getItem('userName');
-    console.log('Usuario autenticado:', userName);
+    const usuarioName = sessionStorage.getItem('usuarioName');
+    const usuarioId = sessionStorage.getItem('usuarioId');
 
-    if (!userName) {
+    console.log('Usuario autenticado:', usuarioName);
+    console.log('ID de usuario:', usuarioId);
+
+    if (!usuarioName) {
       navigate('/login');
+    } else {
+      setUsuarioId(usuarioId);
     }
-    
   }, [navigate]);
+  
+
   
   const [formData, setFormData] = useState({
     nombre: '',
@@ -27,6 +32,8 @@ function AddPelicula() {
     director: '',
     imagen: null
   });
+
+ 
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -44,10 +51,12 @@ function AddPelicula() {
       alert("La puntuación no puede ser mayor que 10.");
       return;
     }
+
+
   
     const data = new FormData();
     Object.keys(formData).forEach(key => data.append(key, formData[key]));
-  
+    data.append('usuarioId', usuarioId);
     // Verifica qué datos se están enviando
     for (let pair of data.entries()) {
       console.log(pair[0] + ':', pair[1]);

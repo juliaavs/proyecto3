@@ -5,8 +5,8 @@ import { Link, useNavigate} from 'react-router-dom';
 
 function Login() {
   const [LoginData, setLoginData] = useState({
-    correoElectronico: '',
-    contrasena: ''
+    email: '',
+    password: ''
   });
   const navigate = useNavigate();
 
@@ -29,11 +29,16 @@ function Login() {
       const data = await respuesta.json();
       
       if (respuesta.ok) {
-        alert(`¡Bienvenido, ${data.usuario}!`);
-        console.log('Usuario autenticado:', data.usuario);
+        sessionStorage.setItem('usuarioId', data.usuarioId);
+        sessionStorage.setItem('usuarioName', data.usuarioName);
+        // Si la respuesta es exitosa, muestra un mensaje de bienvenida
+        alert(`¡Bienvenido, ${data.usuarioName}!`);
+        console.log('Usuario autenticado:', data.usuarioName);
+        console.log('ID de usuario:', data.usuarioId);
 
-        // Almacena el nombre de usuario en sessionStorage
-        sessionStorage.setItem('userName', data.usuario);
+        // Almacena el nombre y el id de usuario en sessionStorage
+        
+        
          // Redirige a la página principal después de un inicio de sesión exitoso
         navigate('/home');
       } else {

@@ -38,13 +38,27 @@ router.post("/login", async (req, res) => {
     if (!esValida) {
       return res.status(401).json({ error: "Credenciales inválidas" });
     }
+    
+    
 
-    res.status(200).json({ usuario: usuario.nombre });
+    res.status(200).json({
+      mensaje: 'Inicio de sesion exitoso',
+      usuarioId: usuario._id,
+      usuarioName: usuario.nombre
+    });
+    
   } catch (err) {
     res.status(500).json({ error: "Error al iniciar sesión", details: err.message });
   }
 });
 
+// Ruta para cerrar sesion
+
+router.post("/logout", (req, res) => {
+  
+  
+  res.status(200).json({ message: "Sesión cerrada exitosamente" });
+});
 
 
 module.exports = router;
