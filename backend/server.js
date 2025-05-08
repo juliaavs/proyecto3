@@ -2,9 +2,6 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const path = require('path');
-const multer = require('multer');
-const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 const router = require('./routes/routes');
 

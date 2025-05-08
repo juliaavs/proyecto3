@@ -40,5 +40,51 @@ export const añadirPelicula = async (peliculaData) => {
   }
 };
 
+// Obtener todas las películas
+export const obtenerPeliculas = async () => {
+  try {
+    const response = await axios.get(`${apiUrl}/peliculas`);
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener películas", error);
+    throw error;
+  }
+};
+
+// Obtener una película por ID
+export const obtenerPeliculaPorId = async (id) => {
+  try {
+    const response = await axios.get(`${apiUrl}/peliculas/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener película", error);
+    throw error;
+  }
+};
+// Actualizar una película
+export const actualizarPelicula = async (id, peliculaData) => {
+  try {
+    const response = await axios.put(`${apiUrl}/peliculas/${id}`, peliculaData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error al actualizar película", error);
+    throw error;
+  }
+};
+// Eliminar una película  
+export const eliminarPelicula = async (id) => {
+  try {
+    const response = await axios.delete(`${apiUrl}/peliculas/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error al eliminar película", error);
+    throw error;
+  }
+};
+
 
 
