@@ -87,48 +87,36 @@ const Home = ({ searchTerm }) => {
       {/* Renderizar las películas según el formato seleccionado */}
       {viewMode === 'cards' ? (
         <div className="row">
-          {filteredPeliculas.map((peli) => (
-            <div className="col-md-4 col-sm-6" key={peli._id}>
-              <div className="card movie-card">
-                <div className="movie-poster">
-                  {peli.imagen ? (
-                    <img
-                      src={`http://localhost:3001${peli.imagen.startsWith('/') ? '' : '/'}${peli.imagen}`}
-                      alt={peli.nombre}
-                    />
-                  ) : (
-                    <div className="movie-poster-placeholder">
-                      <i className="fas fa-film"></i>
-                    </div>
-                  )}
-                </div>
-                <div className="movie-info">
-                  <h5 className="movie-title">{peli.nombre}</h5>
-                  <div className="movie-details">
-                    <span className="movie-year-genre">{peli.genero}</span>
-                    <div className="movie-rating">
-                      <i className="fas fa-star"></i> {peli.puntuacion}/10
-                    </div>
-                  </div>
-                </div>
-                <div className="movie-actions">
-                  <Link to={`/editar-pelicula/${peli._id}`}>
-                    <button className="btn-action" title="Editar">
-                      <i className="fas fa-edit"></i>
-                    </button>
-                  </Link>
-                  <button
-                    className="btn-action"
-                    title="Eliminar"
-                    onClick={() => handleDelete(peli._id)}
-                  >
-                    <i className="fas fa-trash"></i>
-                  </button>
-                </div>
+  {filteredPeliculas.map((peli) => (
+    <div className="col-md-4 col-sm-6" key={peli._id}>
+      <Link to={`/detalle-pelicula/${peli._id}`} className="card-link">
+        <div className="card movie-card">
+          <div className="movie-poster">
+            {peli.imagen ? (
+              <img
+                src={`http://localhost:3001${peli.imagen.startsWith('/') ? '' : '/'}${peli.imagen}`}
+                alt={peli.nombre}
+              />
+            ) : (
+              <div className="movie-poster-placeholder">
+                <i className="fas fa-film"></i>
+              </div>
+            )}
+          </div>
+          <div className="movie-info">
+            <h5 className="movie-title">{peli.nombre}</h5>
+            <div className="movie-details">
+              <span className="movie-year-genre">{peli.genero}</span>
+              <div className="movie-rating">
+                <i className="fas fa-star"></i> {peli.puntuacion}/10
               </div>
             </div>
-          ))}
+          </div>
         </div>
+      </Link>
+    </div>
+  ))}
+</div>
       ) : (
         <ul className="list-group">
           {filteredPeliculas.map((peli) => (
