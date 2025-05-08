@@ -39,6 +39,7 @@
 }
 */
 
+
 .mb-4{
   font-weight: bold;
 }
@@ -80,6 +81,10 @@
   font-size: 14px;
   padding: 5px 15px;
   border: none;
+}
+
+.btn-add:hover {
+  background-color: #883941;
 }
 
 .user-avatar {

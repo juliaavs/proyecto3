@@ -1,5 +1,5 @@
 body {
-  background-color: #f5f5f7;
+  background-color: #c5c5cb;
 }
 
 .movie-card {
@@ -26,7 +26,6 @@ body {
 
 .movie-poster img {
   width: 100%;
-  padding: 30px;
 
   height: 100%;
   object-fit: cover;
@@ -93,4 +92,53 @@ body {
 .btn-action:hover {
   transform: scale(1.1);
   background-color: white;
+}
+
+.list-group-item {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  padding: 15px;
+}
+
+.list-group-item h5 {
+  font-weight: bold;
+}
+
+.list-group-item p {
+  margin: 0;
+}
+
+#botones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+#botones button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 18px;
+  border: none;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+#botones button:hover {
+  background-color: #e0e0e0;
+  transform: scale(1.1);
+}
+
+#botones .btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+#botones .btn-outline-primary {
+  background-color: transparent;
+  color: #007bff;
+  border: 1px solid #007bff;
 }
