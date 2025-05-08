@@ -11,6 +11,9 @@ const router = require('./routes/routes');
 const app = express();
 const PORT = 3001;
 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+
 // Configuración de middleware
 app.use(cors({
   origin: 'http://localhost:3000',  // Puerto donde corre el frontend
@@ -36,6 +39,7 @@ mongoose.connect('mongodb://localhost:27017/ProyectoFinal', {
 
 // Importar modelo de Película
 const Pelicula = require('./models/Pelicula');
+
 
 
 // Configuración de multer

@@ -5,10 +5,14 @@ import Register from './components/Register';
 import Home from './components/Home';
 import AddPelicula from './components/AddPelicula';
 import EditarPelicula from './components/EditarPelicula';
+import Navbar from './components/Navbar';
+
+
 
 function App() {
   return (
     <Router>
+      <Navbar />
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />

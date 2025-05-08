@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 
 function AddPelicula() {
@@ -41,27 +42,37 @@ function AddPelicula() {
     e.preventDefault();
   
     if (formData.puntuacion > 10) {
-      alert("La puntuación no puede ser mayor que 10.");
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'La puntuación no puede ser mayor que 10.',
+      });
       return;
     }
   
     const data = new FormData();
-    Object.keys(formData).forEach(key => data.append(key, formData[key]));
-  
-    // Verifica qué datos se están enviando
-    for (let pair of data.entries()) {
-      console.log(pair[0] + ':', pair[1]);
-    }
+    Object.keys(formData).forEach((key) => data.append(key, formData[key]));
   
     fetch('http://localhost:3001/api/peliculas/add', {
       method: 'POST',
       body: data,
     })
-      .then(res => res.json())
+      .then((res) => res.json())
       .then(() => {
-        navigate('/home');
+        Swal.fire({
+          icon: 'success',
+          title: 'Película creada',
+          text: 'La película se ha añadido correctamente.',
+        }).then(() => navigate('/home'));
       })
-      .catch(err => console.error('Error al añadir película:', err));
+      .catch((err) => {
+        console.error('Error al añadir película:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un problema al añadir la película.',
+        });
+      });
   };
 
   return (

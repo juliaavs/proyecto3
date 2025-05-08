@@ -1,74 +1,104 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
 import './Pelicula.css'; // Asegúrate de importar tu archivo CSS
-
-
-
-
+import Swal from 'sweetalert2';
 const Home = () => {
   const userName = sessionStorage.getItem('userName') || 'Usuario';
   const [peliculas, setPeliculas] = useState([]);
 
   useEffect(() => {
     fetch('http://localhost:3001/api/peliculas')
-      .then(res => res.json())
-      .then(data => setPeliculas(data))
-      .catch(err => console.error('Error al obtener películas:', err));
+      .then((res) => res.json())
+      .then((data) => setPeliculas(data))
+      .catch((err) => console.error('Error al obtener películas:', err));
   }, []);
+
   const handleDelete = (id) => {
-    if (window.confirm('¿Estás seguro de que deseas eliminar esta película?')) {
-      fetch(`http://localhost:3001/api/peliculas/${id}`, {
-        method: 'DELETE',
-      })
-        .then((res) => {
-          if (res.ok) {
-            alert('Película eliminada correctamente');
-            setPeliculas(peliculas.filter((peli) => peli._id !== id)); // Actualiza el estado local
-          } else {
-            alert('Error al eliminar la película');
-          }
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'No podrás revertir esta acción',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`http://localhost:3001/api/peliculas/${id}`, {
+          method: 'DELETE',
         })
-        .catch((err) => console.error('Error al eliminar película:', err));
-    }
+          .then((res) => {
+            if (res.ok) {
+              Swal.fire({
+                icon: 'success',
+                title: 'Eliminada',
+                text: 'La película se ha eliminado correctamente.',
+              });
+              setPeliculas(peliculas.filter((peli) => peli._id !== id)); // Actualiza el estado local
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Hubo un problema al eliminar la película.',
+              });
+            }
+          })
+          .catch((err) => {
+            console.error('Error al eliminar película:', err);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Hubo un problema al eliminar la película.',
+            });
+          });
+      }
+    });
   };
 
   return (
-    <div style={{ textAlign: 'center', padding: '20px' }}>
-      <h1 style={{ fontSize: '2em', color: '#333' }}>Bienvenido, {userName}</h1>
-      <p style={{ fontSize: '1.2em', color: '#555' }}>¡Explora tu colección de películas!</p>
-
-      <Link to="/add">
-        <button>Añadir Nueva Película</button>
-      </Link>
-
-      <div className="peliculas-grid">
-        {peliculas.map(peli => (
-          <div className="pelicula-card" key={peli._id}>
-            <h2>{peli.nombre}</h2>
-            {peli.imagen && (
-                console.log(peli.imagen),
-            <img
-            src={`http://localhost:3001/${peli.imagen}`}
-            alt="Carátula"
-            className="pelicula-imagen"
-            />
-          
-            )}
-       
-            <div className="pelicula-contenido">
-            <p><strong>Nombre:</strong> {peli.nombre}</p>
-              <p><strong>Comentario:</strong> {peli.comentario}</p>
-              <p><strong>Puntuación:</strong> {peli.puntuacion}</p>
-              <p><strong>Duración:</strong> {peli.duracion} min</p>
-              <p><strong>Género:</strong> {peli.genero}</p>
-              <p><strong>Director/a:</strong> {peli.director}</p>
-                     {/* Botón para editar */}
-          <Link to={`/editar-pelicula/${peli._id}`}>
-            <button>Editar</button>
-          </Link>
-          <button onClick={() => handleDelete(peli._id)}>Eliminar</button>
-
+    <div className="container mt-4">
+      <h1 className="mb-4">Mis Películas</h1>
+      <div className="row">
+        {peliculas.map((peli) => (
+            
+          <div className="col-md-4 col-sm-6" key={peli._id}>
+            <div className="card movie-card">
+              <div className="movie-poster">
+                {peli.imagen ? (
+                  <img
+                  src={`http://localhost:3001${peli.imagen.startsWith('/') ? '' : '/'}${peli.imagen}`}
+                  alt={peli.nombre}
+                  />
+                ) : (
+                  <div className="movie-poster-placeholder">
+                    <i className="fas fa-film"></i>
+                  </div>
+                )}
+              </div>
+              <div className="movie-info">
+                <h5 className="movie-title">{peli.nombre}</h5>
+                <div className="movie-details">
+                  <span className="movie-year-genre">{peli.genero}</span>
+                  <div className="movie-rating">
+                    <i className="fas fa-star"></i> {peli.puntuacion}/10
+                  </div>
+                </div>
+              </div>
+              <div className="movie-actions">
+                <Link to={`/editar-pelicula/${peli._id}`}>
+                  <button className="btn-action" title="Editar">
+                    <i className="fas fa-edit"></i>
+                  </button>
+                </Link>
+                <button
+                  className="btn-action"
+                  title="Eliminar"
+                  onClick={() => handleDelete(peli._id)}
+                >
+                  <i className="fas fa-trash"></i>
+                </button>
+              </div>
             </div>
           </div>
         ))}

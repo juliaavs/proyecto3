@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+
 
 function EditarPelicula() {
   const { id } = useParams();
@@ -32,15 +34,28 @@ function EditarPelicula() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = new FormData();
-    Object.keys(formData).forEach(key => data.append(key, formData[key]));
-
+    Object.keys(formData).forEach((key) => data.append(key, formData[key]));
+  
     fetch(`http://localhost:3001/api/peliculas/${id}`, {
       method: 'PUT',
-      body: data
+      body: data,
     })
-      .then(res => res.json())
-      .then(() => navigate('/home'))
-      .catch(err => console.error('Error al actualizar película:', err));
+      .then((res) => res.json())
+      .then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Película actualizada',
+          text: 'La película se ha actualizado correctamente.',
+        }).then(() => navigate('/home'));
+      })
+      .catch((err) => {
+        console.error('Error al actualizar película:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un problema al actualizar la película.',
+        });
+      });
   };
 
   return (
