@@ -91,6 +91,3 @@ router.delete('/:id', async (req, res) => {
 });
 
 module.exports = router;
-const path = require('path');
-const multer = require('multer');
-const bcrypt = require('bcryptjs');

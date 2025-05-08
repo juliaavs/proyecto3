@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import './Pelicula.css'; // Asegúrate de importar tu archivo CSS
+import './Pelicula.css';
 import Swal from 'sweetalert2';
-const Home = () => {
-  const userName = sessionStorage.getItem('userName') || 'Usuario';
+
+const Home = ({ searchTerm }) => {
   const [peliculas, setPeliculas] = useState([]);
 
   useEffect(() => {
@@ -56,19 +56,23 @@ const Home = () => {
     });
   };
 
+  // Filtrar las películas según el término de búsqueda
+  const filteredPeliculas = peliculas.filter((peli) =>
+    peli.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="container mt-4">
       <h1 className="mb-4">Mis Películas</h1>
       <div className="row">
-        {peliculas.map((peli) => (
-            
+        {filteredPeliculas.map((peli) => (
           <div className="col-md-4 col-sm-6" key={peli._id}>
             <div className="card movie-card">
               <div className="movie-poster">
                 {peli.imagen ? (
                   <img
-                  src={`http://localhost:3001${peli.imagen.startsWith('/') ? '' : '/'}${peli.imagen}`}
-                  alt={peli.nombre}
+                    src={`http://localhost:3001${peli.imagen.startsWith('/') ? '' : '/'}${peli.imagen}`}
+                    alt={peli.nombre}
                   />
                 ) : (
                   <div className="movie-poster-placeholder">

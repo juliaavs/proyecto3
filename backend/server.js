@@ -4,6 +4,8 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const router = require('./routes/routes');
+const multer = require('multer');
+const path = require('path');
 
 const app = express();
 const PORT = 3001;

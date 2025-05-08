@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = ({ searchTerm, setSearchTerm }) => {
   const userName = sessionStorage.getItem('userName') || 'U';
 
   return (
@@ -18,8 +18,13 @@ const Navbar = () => {
           <div className="navbar-content d-flex align-items-center w-100">
             <div className="search-box mx-auto">
               <i className="fas fa-search search-icon"></i>
-              <input type="text" className="form-control search-input" 
-                     placeholder="Buscar películas..." />
+              <input
+                type="text"
+                className="form-control search-input"
+                placeholder="Buscar películas..."
+                value={searchTerm} // Muestra el término actual
+                onChange={(e) => setSearchTerm(e.target.value)} // Actualiza el término de búsqueda
+              />
             </div>
             
             <div className="user-controls d-flex align-items-center">
