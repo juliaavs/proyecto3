@@ -123,52 +123,52 @@ const Home = ({ searchTerm }) => {
         <div className="col-md-9">
       <h2 className="mb-4">Mis Películas ({filteredPeliculas.length})</h2>
 
-      {/* Botones para alternar entre cards y lista */}
-      <div className="mb-4" id="botones">
-        <button
-            className={`btn ${viewMode === 'cards' ? 'btn-primary' : 'btn-outline-primary'} me-2`}
-            onClick={() => setViewMode('cards')}
-            title="Ver en cuadrícula"
-        >
-            <i className="fas fa-th"></i>
-        </button>
-        <button
-            className={`btn ${viewMode === 'list' ? 'btn-primary' : 'btn-outline-primary'}`}
-            onClick={() => setViewMode('list')}
-            title="Ver en lista"
-        >
-            <i className="fas fa-bars"></i>
-        </button>
-     </div>
+          {/* Botones para alternar entre cards y lista */}
+          <div className="mb-4" id="botones">
+            <button
+              className={`btn ${viewMode === 'cards' ? 'btn-primary' : 'btn-outline-primary'} me-2`}
+              onClick={() => setViewMode('cards')}
+              title="Ver en cuadrícula"
+            >
+              <i className="fas fa-th"></i>
+            </button>
+            <button
+              className={`btn ${viewMode === 'list' ? 'btn-primary' : 'btn-outline-primary'}`}
+              onClick={() => setViewMode('list')}
+              title="Ver en lista"
+            >
+              <i className="fas fa-bars"></i>
+            </button>
+          </div>
 
-      {/* Renderizar las películas según el formato seleccionado */}
-      {viewMode === 'cards' ? (
-        <div className="row">
-  {filteredPeliculas.map((peli) => (
-    <div className="col-md-4 col-sm-6" key={peli._id}>
+          {/* Renderizar las películas según el formato seleccionado */}
+          {viewMode === 'cards' ? (
+            <div className="row">
+              {filteredPeliculas.map((peli) => (
+                <div className="col-md-4 col-sm-6" key={peli._id}>
                   <div className="card movie-card">
-      <Link to={`/detalle-pelicula/${peli._id}`} className="card-link">
-          <div className="movie-poster">
-            {peli.imagen ? (
-              <img
-                src={`http://localhost:3001${peli.imagen.startsWith('/') ? '' : '/'}${peli.imagen}`}
-                alt={peli.nombre}
-              />
-            ) : (
-              <div className="movie-poster-placeholder">
-                <i className="fas fa-film"></i>
-              </div>
-            )}
-          </div>
-          <div className="movie-info">
-            <h5 className="movie-title">{peli.nombre}</h5>
-            <div className="movie-details">
-              <span className="movie-year-genre">{peli.genero}</span>
-              <div className="movie-rating">
-                <i className="fas fa-star"></i> {peli.puntuacion}/10
-              </div>
-            </div>
-          </div>
+                    <Link to={`/detalle-pelicula/${peli._id}`} className="card-link">
+                      <div className="movie-poster">
+                        {peli.imagen ? (
+                          <img
+                            src={`http://localhost:3001${peli.imagen.startsWith('/') ? '' : '/'}${peli.imagen}`}
+                            alt={peli.nombre}
+                          />
+                        ) : (
+                          <div className="movie-poster-placeholder">
+                            <i className="fas fa-film"></i>
+                          </div>
+                        )}
+                      </div>
+                      <div className="movie-info">
+                        <h5 className="movie-title">{peli.nombre}</h5>
+                        <div className="movie-details">
+                          <span className="movie-year-genre">{peli.genero}</span>
+                          <div className="movie-rating">
+                            <i className="fas fa-star"></i> {peli.puntuacion}/10
+                          </div>
+                        </div>
+                      </div>
                     </Link>
                     {/* Botones de acciones */}
                     <div className="movie-actions">
