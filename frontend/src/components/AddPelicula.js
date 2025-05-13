@@ -63,7 +63,9 @@ function AddPelicula() {
           icon: 'success',
           title: 'Película creada',
           text: 'La película se ha añadido correctamente.',
-        }).then(() => navigate('/home'));
+        }).then(() => {
+          navigate('/home'); // Redirige a la página principal
+        });
       })
       .catch((err) => {
         console.error('Error al añadir película:', err);

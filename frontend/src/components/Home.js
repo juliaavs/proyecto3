@@ -8,11 +8,23 @@ const Home = ({ searchTerm }) => {
   const [viewMode, setViewMode] = useState('cards'); // Estado para alternar entre cards y lista
 
   useEffect(() => {
+    // Obtener todas las películas
     fetch('http://localhost:3001/api/peliculas')
       .then((res) => res.json())
-      .then((data) => setPeliculas(data))
+      .then((data) => {
+        setPeliculas(data);
+        actualizarFiltros(data); // Actualizar géneros y directores
+      })
       .catch((err) => console.error('Error al obtener películas:', err));
   }, []);
+
+  const actualizarFiltros = (peliculas) => {
+    // Calcular géneros y directores únicos
+    const nuevosGeneros = [...new Set(peliculas.map((peli) => peli.genero))];
+    const nuevosDirectores = [...new Set(peliculas.map((peli) => peli.director))];
+    setGeneros(nuevosGeneros);
+    setDirectores(nuevosDirectores);
+  }; 
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -36,7 +48,9 @@ const Home = ({ searchTerm }) => {
                 title: 'Eliminada',
                 text: 'La película se ha eliminado correctamente.',
               });
-              setPeliculas(peliculas.filter((peli) => peli._id !== id)); // Actualiza el estado local
+              const nuevasPeliculas = peliculas.filter((peli) => peli._id !== id);
+              setPeliculas(nuevasPeliculas); // Actualiza el estado local
+              actualizarFiltros(nuevasPeliculas); // Act            
             } else {
               Swal.fire({
                 icon: 'error',
@@ -57,13 +71,56 @@ const Home = ({ searchTerm }) => {
     });
   };
 
-  // Filtrar las películas según el término de búsqueda
-  const filteredPeliculas = peliculas.filter((peli) =>
-    peli.nombre.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Calcular géneros y directores únicos dinámicamente
+  //const generos = [...new Set(peliculas.map((peli) => peli.genero))];
+  //const directores = [...new Set(peliculas.map((peli) => peli.director))];
+
+  // Filtrar las películas según el término de búsqueda, género y director
+  const filteredPeliculas = peliculas.filter((peli) => {
+    const matchesSearch = peli.nombre.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesGenero = selectedGenero ? peli.genero === selectedGenero : true;
+    const matchesDirector = selectedDirector ? peli.director === selectedDirector : true;
+    return matchesSearch && matchesGenero && matchesDirector;
+  });
 
   return (
     <div className="container mt-4">
+      <div className="row">
+        {/* Filtros en el lateral izquierdo */}
+        <div className="col-md-3">
+          <div className="filters">
+            <h5>Filtrar por Género</h5>
+            <ul className="filter-list">
+              {generos.map((genero) => (
+                <li key={genero}>
+                  <button
+                    className={`filter-button ${selectedGenero === genero ? 'active' : ''}`}
+                    onClick={() => setSelectedGenero(selectedGenero === genero ? '' : genero)}
+                  >
+                    {genero}
+                  </button>
+                </li>
+              ))}
+            </ul>
+
+            <h5>Filtrar por Director</h5>
+            <ul className="filter-list">
+              {directores.map((director) => (
+                <li key={director}>
+                  <button
+                    className={`filter-button ${selectedDirector === director ? 'active' : ''}`}
+                    onClick={() => setSelectedDirector(selectedDirector === director ? '' : director)}
+                  >
+                    {director}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Lista de películas */}
+        <div className="col-md-9">
       <h2 className="mb-4">Mis Películas ({filteredPeliculas.length})</h2>
 
       {/* Botones para alternar entre cards y lista */}
@@ -89,8 +146,8 @@ const Home = ({ searchTerm }) => {
         <div className="row">
   {filteredPeliculas.map((peli) => (
     <div className="col-md-4 col-sm-6" key={peli._id}>
+                  <div className="card movie-card">
       <Link to={`/detalle-pelicula/${peli._id}`} className="card-link">
-        <div className="card movie-card">
           <div className="movie-poster">
             {peli.imagen ? (
               <img
@@ -112,35 +169,41 @@ const Home = ({ searchTerm }) => {
               </div>
             </div>
           </div>
+                    </Link>
+                    {/* Botones de acciones */}
+                    <div className="movie-actions">
+                      <Link to={`/editar-pelicula/${peli._id}`}>
+                        <button className="btn-action" title="Editar">
+                          <i className="fas fa-edit"></i>
+                        </button>
+                      </Link>
+                      <button
+                        className="btn-action"
+                        title="Eliminar"
+                        onClick={() => handleDelete(peli._id)}
+                      >
+                        <i className="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <ul className="list-group">
+              {filteredPeliculas.map((peli) => (
+                <li className="list-group-item d-flex justify-content-between align-items-center" key={peli._id}>
+                  <div>
+                    <h5>{peli.nombre}</h5>
+                    <p className="mb-1"><strong>Género:</strong> {peli.genero}</p>
+                    <p className="mb-1"><strong>Puntuación:</strong> {peli.puntuacion}/10</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
-      </Link>
-    </div>
-  ))}
-</div>
-      ) : (
-        <ul className="list-group">
-          {filteredPeliculas.map((peli) => (
-            <li className="list-group-item d-flex justify-content-between align-items-center" key={peli._id}>
-              <div>
-                <h5>{peli.nombre}</h5>
-                <p className="mb-1"><strong>Género:</strong> {peli.genero}</p>
-                <p className="mb-1"><strong>Puntuación:</strong> {peli.puntuacion}/10</p>
-              </div>
-              <div>
-                <Link to={`/editar-pelicula/${peli._id}`}>
-                  <button className="btn btn-sm btn-outline-primary me-2">Editar</button>
-                </Link>
-                <button
-                  className="btn btn-sm btn-outline-danger"
-                  onClick={() => handleDelete(peli._id)}
-                >
-                  Eliminar
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
+      </div>
     </div>
   );
 };
