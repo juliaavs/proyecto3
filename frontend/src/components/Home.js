@@ -121,7 +121,7 @@ const Home = ({ searchTerm }) => {
 
         {/* Lista de películas */}
         <div className="col-md-9">
-      <h2 className="mb-4">Mis Películas ({filteredPeliculas.length})</h2>
+          <h2 className="mb-4">Mis Películas ({filteredPeliculas.length})</h2>
 
           {/* Botones para alternar entre cards y lista */}
           <div className="mb-4" id="botones">
