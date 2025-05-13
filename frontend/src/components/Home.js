@@ -4,19 +4,30 @@ import './Pelicula.css';
 import Swal from 'sweetalert2';
 
 const Home = ({ searchTerm }) => {
+  const usuarioName = sessionStorage.getItem('usuarioName') || 'Usuario';
+  const usuarioId = sessionStorage.getItem('usuarioId');
   const [peliculas, setPeliculas] = useState([]);
   const [viewMode, setViewMode] = useState('cards'); // Estado para alternar entre cards y lista
+  const [generos, setGeneros] = useState([]); // Lista de géneros únicos
+  const [directores, setDirectores] = useState([]); // Lista de directores únicos
+  const [selectedGenero, setSelectedGenero] = useState(''); // Filtro por género
+  const [selectedDirector, setSelectedDirector] = useState(''); // Filtro por director
 
   useEffect(() => {
-    // Obtener todas las películas
-    fetch('http://localhost:3001/api/peliculas')
+    if (!usuarioId) {
+      console.error('No se encontró el usuarioId');
+      return;
+    }
+
+    // Obtener todas las películas del usuario
+    fetch(`http://localhost:3001/api/peliculas?usuarioId=${usuarioId}`)
       .then((res) => res.json())
       .then((data) => {
         setPeliculas(data);
         actualizarFiltros(data); // Actualizar géneros y directores
       })
       .catch((err) => console.error('Error al obtener películas:', err));
-  }, []);
+  }, [usuarioId]);
 
   const actualizarFiltros = (peliculas) => {
     // Calcular géneros y directores únicos
@@ -24,7 +35,7 @@ const Home = ({ searchTerm }) => {
     const nuevosDirectores = [...new Set(peliculas.map((peli) => peli.director))];
     setGeneros(nuevosGeneros);
     setDirectores(nuevosDirectores);
-  }; 
+  };
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -40,6 +51,8 @@ const Home = ({ searchTerm }) => {
       if (result.isConfirmed) {
         fetch(`http://localhost:3001/api/peliculas/${id}`, {
           method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ usuarioId }),
         })
           .then((res) => {
             if (res.ok) {
@@ -50,7 +63,7 @@ const Home = ({ searchTerm }) => {
               });
               const nuevasPeliculas = peliculas.filter((peli) => peli._id !== id);
               setPeliculas(nuevasPeliculas); // Actualiza el estado local
-              actualizarFiltros(nuevasPeliculas); // Act            
+              actualizarFiltros(nuevasPeliculas); // Actualiza los filtros dinámicamente
             } else {
               Swal.fire({
                 icon: 'error',
@@ -70,10 +83,6 @@ const Home = ({ searchTerm }) => {
       }
     });
   };
-
-  // Calcular géneros y directores únicos dinámicamente
-  //const generos = [...new Set(peliculas.map((peli) => peli.genero))];
-  //const directores = [...new Set(peliculas.map((peli) => peli.director))];
 
   // Filtrar las películas según el término de búsqueda, género y director
   const filteredPeliculas = peliculas.filter((peli) => {
@@ -209,3 +218,4 @@ const Home = ({ searchTerm }) => {
 };
 
 export default Home;
+

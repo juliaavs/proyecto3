@@ -4,8 +4,8 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const router = require('./routes/routes');
-const multer = require('multer');
 const path = require('path');
+const multer = require('multer');
 
 const app = express();
 const PORT = 3001;
@@ -23,7 +23,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // Para manejar formularios codificados
 app.use(bodyParser.json());
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Para servir archivos estáticos de la carpeta 'uploads'
 app.use('/api', router);
 
 
