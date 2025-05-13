@@ -7,6 +7,8 @@ import AddPelicula from './components/AddPelicula';
 import EditarPelicula from './components/EditarPelicula';
 import Navbar from './components/Navbar';
 import DetallePelicula from './components/DetallePelicula';
+import UserDashboard from './components/UserDashboard';
+
 
 
 function App() {
@@ -22,6 +24,7 @@ function App() {
         <Route path="/add" element={<AddPelicula />} />
         <Route path="/editar-pelicula/:id" element={<EditarPelicula />} />
         <Route path="/detalle-pelicula/:id" element={<DetallePelicula />} /> {/* Nueva ruta */}
+        <Route path="/dashboard" element={<UserDashboard />} /> {/* Nueva ruta */}
 
       </Routes>
     </Router>

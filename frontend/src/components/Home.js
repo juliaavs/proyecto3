@@ -5,22 +5,37 @@ import Swal from 'sweetalert2';
 
 const Home = ({ searchTerm }) => {
   const usuarioName = sessionStorage.getItem('usuarioName') || 'Usuario';
+  const usuarioId = sessionStorage.getItem('usuarioId');
   const [peliculas, setPeliculas] = useState([]);
   const [viewMode, setViewMode] = useState('cards'); // Estado para alternar entre cards y lista
+  const [generos, setGeneros] = useState([]); // Lista de géneros únicos
+  const [directores, setDirectores] = useState([]); // Lista de directores únicos
+  const [selectedGenero, setSelectedGenero] = useState(''); // Filtro por género
+  const [selectedDirector, setSelectedDirector] = useState(''); // Filtro por director
 
   useEffect(() => {
-    const usuarioId = sessionStorage.getItem('usuarioId');
-
-    // Verifica si existe el usuarioId antes de hacer la petición
-    if (usuarioId) {
-      fetch(`http://localhost:3001/api/peliculas?usuarioId=${usuarioId}`)
-        .then(res => res.json())
-        .then(data => setPeliculas(data))  // Si no es un array, setPeliculas podría fallar
-        .catch(err => console.error('Error al obtener películas:', err));
-    } else {
+    if (!usuarioId) {
       console.error('No se encontró el usuarioId');
+      return;
     }
-  }, []);
+
+    // Obtener todas las películas del usuario
+    fetch(`http://localhost:3001/api/peliculas?usuarioId=${usuarioId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setPeliculas(data);
+        actualizarFiltros(data); // Actualizar géneros y directores
+      })
+      .catch((err) => console.error('Error al obtener películas:', err));
+  }, [usuarioId]);
+
+  const actualizarFiltros = (peliculas) => {
+    // Calcular géneros y directores únicos
+    const nuevosGeneros = [...new Set(peliculas.map((peli) => peli.genero))];
+    const nuevosDirectores = [...new Set(peliculas.map((peli) => peli.director))];
+    setGeneros(nuevosGeneros);
+    setDirectores(nuevosDirectores);
+  };
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -36,6 +51,8 @@ const Home = ({ searchTerm }) => {
       if (result.isConfirmed) {
         fetch(`http://localhost:3001/api/peliculas/${id}`, {
           method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ usuarioId }),
         })
           .then((res) => {
             if (res.ok) {
@@ -44,7 +61,9 @@ const Home = ({ searchTerm }) => {
                 title: 'Eliminada',
                 text: 'La película se ha eliminado correctamente.',
               });
-              setPeliculas(peliculas.filter((peli) => peli._id !== id)); // Actualiza el estado local
+              const nuevasPeliculas = peliculas.filter((peli) => peli._id !== id);
+              setPeliculas(nuevasPeliculas); // Actualiza el estado local
+              actualizarFiltros(nuevasPeliculas); // Actualiza los filtros dinámicamente
             } else {
               Swal.fire({
                 icon: 'error',
@@ -65,109 +84,134 @@ const Home = ({ searchTerm }) => {
     });
   };
 
-  // Filtrar las películas según el término de búsqueda
-  const filteredPeliculas = peliculas.filter((peli) =>
-    peli.nombre.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filtrar las películas según el término de búsqueda, género y director
+  const filteredPeliculas = peliculas.filter((peli) => {
+    const matchesSearch = peli.nombre.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesGenero = selectedGenero ? peli.genero === selectedGenero : true;
+    const matchesDirector = selectedDirector ? peli.director === selectedDirector : true;
+    return matchesSearch && matchesGenero && matchesDirector;
+  });
 
   return (
     <div className="container mt-4">
-      <h2 className="mb-4">Mis Películas ({filteredPeliculas.length})</h2>
+      <div className="row">
+        {/* Filtros en el lateral izquierdo */}
+        <div className="col-md-3">
+          <div className="filters">
+            <h5>Filtrar por Género</h5>
+            <ul className="filter-list">
+              {generos.map((genero) => (
+                <li key={genero}>
+                  <button
+                    className={`filter-button ${selectedGenero === genero ? 'active' : ''}`}
+                    onClick={() => setSelectedGenero(selectedGenero === genero ? '' : genero)}
+                  >
+                    {genero}
+                  </button>
+                </li>
+              ))}
+            </ul>
 
-      {/* Botones para alternar entre cards y lista */}
-      <div className="mb-4" id="botones">
-        <button
-            className={`btn ${viewMode === 'cards' ? 'btn-primary' : 'btn-outline-primary'} me-2`}
-            onClick={() => setViewMode('cards')}
-            title="Ver en cuadrícula"
-        >
-            <i className="fas fa-th"></i>
-        </button>
-        <button
-            className={`btn ${viewMode === 'list' ? 'btn-primary' : 'btn-outline-primary'}`}
-            onClick={() => setViewMode('list')}
-            title="Ver en lista"
-        >
-            <i className="fas fa-bars"></i>
-        </button>
-     </div>
+            <h5>Filtrar por Director</h5>
+            <ul className="filter-list">
+              {directores.map((director) => (
+                <li key={director}>
+                  <button
+                    className={`filter-button ${selectedDirector === director ? 'active' : ''}`}
+                    onClick={() => setSelectedDirector(selectedDirector === director ? '' : director)}
+                  >
+                    {director}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
 
-      {/* Renderizar las películas según el formato seleccionado */}
-      {viewMode === 'cards' ? (
-        <div className="row">
-          {filteredPeliculas.length > 0 ? (
-            filteredPeliculas.map((peli) => (
-              <div className="col-md-4 col-sm-6" key={peli._id}>
-                <Link to={`/detalle-pelicula/${peli._id}`} className="card-link">
+        {/* Lista de películas */}
+        <div className="col-md-9">
+          <h2 className="mb-4">Mis Películas ({filteredPeliculas.length})</h2>
+
+          {/* Botones para alternar entre cards y lista */}
+          <div className="mb-4" id="botones">
+            <button
+              className={`btn ${viewMode === 'cards' ? 'btn-primary' : 'btn-outline-primary'} me-2`}
+              onClick={() => setViewMode('cards')}
+              title="Ver en cuadrícula"
+            >
+              <i className="fas fa-th"></i>
+            </button>
+            <button
+              className={`btn ${viewMode === 'list' ? 'btn-primary' : 'btn-outline-primary'}`}
+              onClick={() => setViewMode('list')}
+              title="Ver en lista"
+            >
+              <i className="fas fa-bars"></i>
+            </button>
+          </div>
+
+          {/* Renderizar las películas según el formato seleccionado */}
+          {viewMode === 'cards' ? (
+            <div className="row">
+              {filteredPeliculas.map((peli) => (
+                <div className="col-md-4 col-sm-6" key={peli._id}>
                   <div className="card movie-card">
-                    <div className="movie-poster">
-                      {peli.imagen ? (
-                        <img
-                          src={`http://localhost:3001${peli.imagen.startsWith('/') ? '' : '/'}${peli.imagen}`}
-                          alt={peli.nombre}
-                        />
-                      ) : (
-                        <div className="movie-poster-placeholder">
-                          <i className="fas fa-film"></i>
-                        </div>
-                      )}
-                    </div>
-                    <div className="movie-info">
-                      <h5 className="movie-title">{peli.nombre}</h5>
-                      <div className="movie-details">
-                        <span className="movie-year-genre">{peli.genero}</span>
-                        <div className="movie-rating">
-                          <i className="fas fa-star"></i> {peli.puntuacion}/10
+                    <Link to={`/detalle-pelicula/${peli._id}`} className="card-link">
+                      <div className="movie-poster">
+                        {peli.imagen ? (
+                          <img
+                            src={`http://localhost:3001${peli.imagen.startsWith('/') ? '' : '/'}${peli.imagen}`}
+                            alt={peli.nombre}
+                          />
+                        ) : (
+                          <div className="movie-poster-placeholder">
+                            <i className="fas fa-film"></i>
+                          </div>
+                        )}
+                      </div>
+                      <div className="movie-info">
+                        <h5 className="movie-title">{peli.nombre}</h5>
+                        <div className="movie-details">
+                          <span className="movie-year-genre">{peli.genero}</span>
+                          <div className="movie-rating">
+                            <i className="fas fa-star"></i> {peli.puntuacion}/10
+                          </div>
                         </div>
                       </div>
+                    </Link>
+                    {/* Botones de acciones */}
+                    <div className="movie-actions">
+                      <Link to={`/editar-pelicula/${peli._id}`}>
+                        <button className="btn-action" title="Editar">
+                          <i className="fas fa-edit"></i>
+                        </button>
+                      </Link>
+                      <button
+                        className="btn-action"
+                        title="Eliminar"
+                        onClick={() => handleDelete(peli._id)}
+                      >
+                        <i className="fas fa-trash"></i>
+                      </button>
                     </div>
                   </div>
-                </Link>
-                <div className="movie-actions">
-                  <Link to={`/editar-pelicula/${peli._id}`}>
-                    <button>Editar</button>
-                  </Link>
-                  <button onClick={() => handleDelete(peli._id)}>Eliminar</button>
                 </div>
-              </div>
-            ))
+              ))}
+            </div>
           ) : (
-            <p>No tienes películas registradas.</p>
+            <ul className="list-group">
+              {filteredPeliculas.map((peli) => (
+                <li className="list-group-item d-flex justify-content-between align-items-center" key={peli._id}>
+                  <div>
+                    <h5>{peli.nombre}</h5>
+                    <p className="mb-1"><strong>Género:</strong> {peli.genero}</p>
+                    <p className="mb-1"><strong>Puntuación:</strong> {peli.puntuacion}/10</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
           )}
         </div>
-      ) : (
-        <ul className="list-group">
-          {filteredPeliculas.map((peli) => (
-            <li className="list-group-item d-flex justify-content-between align-items-center" key={peli._id}>
-              <div>
-                <h5>{peli.nombre}</h5>
-                <p className="mb-1"><strong>Género:</strong> {peli.genero}</p>
-                <p className="mb-1"><strong>Puntuación:</strong> {peli.puntuacion}/10</p>
-              </div>
-              <div>
-                <Link to={`/editar-pelicula/${peli._id}`}>
-                  <button className="btn btn-sm btn-outline-primary me-2">Editar</button>
-                </Link>
-                <button
-                  className="btn btn-sm btn-outline-danger"
-                  onClick={() => handleDelete(peli._id)}
-                >
-                  Eliminar
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
-
-      {/* Mostrar el saludo con el nombre del usuario */}
-      <div style={{ textAlign: 'center', padding: '20px' }}>
-        <h1 style={{ fontSize: '2em', color: '#333' }}>Bienvenido, {usuarioName}</h1>
-        <p style={{ fontSize: '1.2em', color: '#555' }}>¡Explora tu colección de películas!</p>
-
-        <Link to="/add">
-          <button>Añadir Nueva Película</button>
-        </Link>
       </div>
     </div>
   );

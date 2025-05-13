@@ -77,7 +77,9 @@ function AddPelicula() {
           icon: 'success',
           title: 'Película creada',
           text: 'La película se ha añadido correctamente.',
-        }).then(() => navigate('/home'));
+        }).then(() => {
+          navigate('/home'); // Redirige a la página principal
+        });
       })
       .catch((err) => {
         console.error('Error al añadir película:', err);
@@ -91,17 +93,96 @@ function AddPelicula() {
 
   return (
     <div className="form-container">
-      <h2>🎬 Añadir Nueva Película</h2>
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
-        <input type="text" name="nombre" placeholder="Nombre" onChange={handleChange} required />
-        
-        <textarea name="comentario" placeholder="Comentario" onChange={handleChange}></textarea>
-        <input type="number" name="puntuacion" placeholder="Puntuación (máx 10)" onChange={handleChange} required />
-        <input type="number" name="duracion" placeholder="Duración (min)" onChange={handleChange} required />
-        <input type="text" name="genero" placeholder="Género" onChange={handleChange} required />
-        <input type="text" name="director" placeholder="Director/a" onChange={handleChange} required />
-        <input type="file" name="imagen" accept="image/*" onChange={handleChange} />
-        <button type="submit">Guardar</button>
+      <h1 className="form-title">Añadir Nueva Película</h1>
+      <form onSubmit={handleSubmit} encType="multipart/form-data" className="form">
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="nombre">Nombre</label>
+            <input
+              type="text"
+              id="nombre"
+              name="nombre"
+              value={formData.nombre}
+              onChange={handleChange}
+              className="form-control"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="genero">Género</label>
+            <input
+              type="text"
+              id="genero"
+              name="genero"
+              value={formData.genero}
+              onChange={handleChange}
+              className="form-control"
+              required
+            />
+          </div>
+        </div>
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="puntuacion">Puntuación (máx 10)</label>
+            <input
+              type="number"
+              id="puntuacion"
+              name="puntuacion"
+              value={formData.puntuacion}
+              onChange={handleChange}
+              className="form-control"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="duracion">Duración (min)</label>
+            <input
+              type="number"
+              id="duracion"
+              name="duracion"
+              value={formData.duracion}
+              onChange={handleChange}
+              className="form-control"
+              required
+            />
+          </div>
+        </div>
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="director">Director/a</label>
+            <input
+              type="text"
+              id="director"
+              name="director"
+              value={formData.director}
+              onChange={handleChange}
+              className="form-control"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="imagen">Imagen</label>
+            <input
+              type="file"
+              id="imagen"
+              name="imagen"
+              accept="image/*"
+              onChange={handleChange}
+              className="form-control"
+            />
+          </div>
+        </div>
+        <div className="form-group">
+          <label htmlFor="comentario">Comentario</label>
+          <textarea
+            id="comentario"
+            name="comentario"
+            value={formData.comentario}
+            onChange={handleChange}
+            className="form-control"
+          ></textarea>
+        </div>
+        <button type="submit" className="btn btn-primary">Guardar</button>
       </form>
     </div>
   );

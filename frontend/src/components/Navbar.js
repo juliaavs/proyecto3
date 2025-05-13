@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import logo from '../img/logo2.jpeg'; // Asegúrate de que la ruta sea correcta
 
 const Navbar = ({ searchTerm, setSearchTerm }) => {
   const userName = sessionStorage.getItem('userName') || 'U';
@@ -7,8 +8,16 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark">
       <div className="container">
-        <Link className="navbar-brand" to="/home">FilmTracker</Link>
-        
+      <Link className="navbar-brand" to="/home">
+          <img
+            src={
+              logo // Ruta de la imagen
+            }// Ruta de la imagen
+            alt="FilmTracker Logo"
+            className="navbar-logo"
+            style={{ width: '170px', height: '80px', display: '-moz-initial'}} // Ajusta el tamaño según sea necesario
+          />
+      </Link>        
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" 
                 data-bs-target="#navbarContent">
           <span className="navbar-toggler-icon"></span>
@@ -33,7 +42,9 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
                   <i className="fas fa-plus me-1"></i>Añadir Nueva Película
                 </button>
               </Link>
-              <div className="user-avatar">{userName.charAt(0).toUpperCase()}</div>
+              <Link to="/dashboard">
+                <div className="user-avatar">{userName.charAt(0).toUpperCase()}</div>
+              </Link>
             </div>
           </div>
         </div>

@@ -7,6 +7,7 @@ const movieSchema = new mongoose.Schema({
   duracion: Number,
   genero: String,
   director: String,
+  
   imagen: String
 });
 

@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const router = require('./routes/routes');
 const path = require('path');
+const multer = require('multer');
 
 const app = express();
 const PORT = 3001;
@@ -46,6 +47,19 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + ext); // ✅ guarda con extensión
 
   }
-})*/
+});
+
+const upload = multer({ storage });
+
+app.use("/api/usuarios", require("./routes/usuarios"));
+app.use("/api/peliculas", require("./routes/peliculas"));
+
+
+
+app.get('/', (req, res) => {
+  res.send('Backend funcionando');
+});
+
+
 
 app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
