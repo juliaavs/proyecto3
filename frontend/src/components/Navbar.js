@@ -42,7 +42,9 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
                   <i className="fas fa-plus me-1"></i>Añadir Nueva Película
                 </button>
               </Link>
-              <div className="user-avatar">{userName.charAt(0).toUpperCase()}</div>
+              <Link to="/dashboard">
+                <div className="user-avatar">{userName.charAt(0).toUpperCase()}</div>
+              </Link>
             </div>
           </div>
         </div>
