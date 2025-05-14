@@ -1,5 +1,5 @@
 body {
-  background-color: #14020b;
+  background-color:#111827;
 }
 
 .movie-card {
@@ -10,6 +10,18 @@ body {
   margin-bottom: 30px;
   width: 240px;
   height: 100%;
+  background-color: #1F2937;
+}
+.movie-card h5 {
+  color: #F9FAFB;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.movie-card p {
+  color: #F9FAFB;
+  font-size: 14px;
+  margin-bottom: 5px;
 }
 
 .movie-card:hover {
@@ -19,7 +31,7 @@ body {
 
 .movie-poster {
   height: 250px;
-  background-color: #dfe6e9;
+  background-color: #1F2937;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -52,14 +64,14 @@ body {
 }
 
 .movie-details {
-  color: #666;
+  color: #F9FAFB;
   font-size: 14px;
   display: flex;
   justify-content: space-between;
 }
 
 .movie-year-genre {
-  color: #666;
+  color:#F9FAFB;
 }
 
 .movie-rating {
@@ -144,6 +156,8 @@ body {
   color: #1a1a2e;
   border: 1px solid #202068;
 }
+
+
 
 
 
@@ -280,7 +294,7 @@ textarea.form-control {
 
 /* Filtros */
 .filters {
-  background-color: #ffffff;
+  background-color: #F9FAFB;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
