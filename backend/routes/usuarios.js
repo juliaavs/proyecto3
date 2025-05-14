@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
+const { exec } = require('child_process');
 const Usuario = require("../models/Usuario");
+const path = require('path');
 
 // Ruta para crear un usuario
 router.post("/register", async (req, res) => {
@@ -16,6 +18,25 @@ router.post("/register", async (req, res) => {
       password: hashedPassword,
     });
     await nuevoUsuario.save();
+
+    console.log('Usuario guardado:', nuevoUsuario); // 👈 Verifica que el usuario se guarda correctamente
+
+    const scriptPath = path.join(__dirname, '..', 'scripts', 'enviar_correo.py');
+    const comando = `python3 "${scriptPath}" "${nuevoUsuario.email}" "${nuevoUsuario.nombre}"`;
+
+    // Ejecutar el script de Python para enviar el correo
+    exec(comando, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error al ejecutar el script: ${error.message}`);
+        return res.status(500).json({ error: "Error al enviar el correo" });
+      }
+      if (stderr) {
+        console.error(`Error en el script: ${stderr}`);
+        return res.status(500).json({ error: "Error en el script de envío de correo" });
+      }
+      console.log(`Salida del script: ${stdout}`);
+      console.log(`Correo enviado a: ${nuevoUsuario.email}`);
+    });
     res.status(201).json({ message: "Usuario registrado exitosamente" });
   } catch (err) {
     res.status(500).json({ error: "Error al registrar usuario", details: err.message });
