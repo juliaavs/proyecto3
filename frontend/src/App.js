@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
 import Home from './components/Home';
@@ -11,12 +11,14 @@ import UserDashboard from './components/UserDashboard';
 
 
 
-function App() {
+function AppWrapper() {
   const [searchTerm, setSearchTerm] = useState(''); // Estado global para el término de búsqueda
+  const location = useLocation();
+  const showNavbar = location.pathname === '/home'; // Mostrar Navbar solo en la ruta /home
 
   return (
-    <Router>
-      <Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+    <div>
+      {showNavbar && <Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />} {/* Pasar el estado y la función al Navbar */}
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -25,10 +27,15 @@ function App() {
         <Route path="/editar-pelicula/:id" element={<EditarPelicula />} />
         <Route path="/detalle-pelicula/:id" element={<DetallePelicula />} /> {/* Nueva ruta */}
         <Route path="/dashboard" element={<UserDashboard />} /> {/* Nueva ruta */}
-
       </Routes>
+    </div>
+  );
+}
+export default function App() {
+  return (
+    <Router>
+      <AppWrapper />
     </Router>
   );
 }
-
-export default App;
+// El componente AppWrapper maneja la lógica de enrutamiento y el estado global del término de búsqueda

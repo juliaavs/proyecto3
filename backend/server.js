@@ -5,12 +5,10 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const router = require('./routes/routes');
 const path = require('path');
-const multer = require('multer');
 
 const app = express();
 const PORT = 3001;
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 // Configuración de middleware
@@ -35,35 +33,6 @@ mongoose.connect('mongodb://localhost:27017/ProyectoFinal', {
 })
 .then(() => console.log('MongoDB conectado'))
 .catch((err) => console.error('Error de conexión a MongoDB:', err));
-
-// Importar modelo de Película
-const Pelicula = require('./models/Pelicula');
-
-
-
-// Configuración de multer
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/');
-  },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    cb(null, Date.now() + ext); // ✅ guarda con extensión
-
-  }
-});
-
-const upload = multer({ storage });
-
-app.use("/api/usuarios", require("./routes/usuarios"));
-app.use("/api/peliculas", require("./routes/peliculas"));
-
-
-
-app.get('/', (req, res) => {
-  res.send('Backend funcionando');
-});
-
 
 
 app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));

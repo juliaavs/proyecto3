@@ -4,7 +4,6 @@ import './Pelicula.css';
 import Swal from 'sweetalert2';
 
 const Home = ({ searchTerm }) => {
-  const usuarioName = sessionStorage.getItem('usuarioName') || 'Usuario';
   const usuarioId = sessionStorage.getItem('usuarioId');
   const [peliculas, setPeliculas] = useState([]);
   const [viewMode, setViewMode] = useState('cards'); // Estado para alternar entre cards y lista
@@ -130,7 +129,7 @@ const Home = ({ searchTerm }) => {
 
         {/* Lista de películas */}
         <div className="col-md-9">
-          <h2 className="mb-4">Mis Películas ({filteredPeliculas.length})</h2>
+          <h2 className="mb-4 text-white">Mis Películas ({filteredPeliculas.length})</h2>
 
           {/* Botones para alternar entre cards y lista */}
           <div className="mb-4" id="botones">
@@ -218,4 +217,5 @@ const Home = ({ searchTerm }) => {
 };
 
 export default Home;
+
 
