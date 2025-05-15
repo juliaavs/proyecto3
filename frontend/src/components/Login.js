@@ -31,6 +31,7 @@ function Login() {
       if (respuesta.ok) {
         sessionStorage.setItem('usuarioId', data.usuarioId);
         sessionStorage.setItem('usuarioName', data.usuarioName);
+        sessionStorage.setItem('usuarioEmail', data.usuarioEmail);
         alert(`¡Bienvenido, ${data.usuarioName}!`);
         console.log('Usuario autenticado:', data.usuarioName);
         console.log('ID de usuario:', data.usuarioId);

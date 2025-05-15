@@ -11,13 +11,14 @@ const UserDashboard = () => {
   const [usuario, setUsuario] = useState({
     nombre: sessionStorage.getItem('usuarioName') || 'Usuario',
     id: sessionStorage.getItem('usuarioId'),
+    email: sessionStorage.getItem('usuarioEmail') || 'Desconocido'
   });
   const [peliculas, setPeliculas] = useState([]);
   const [generosData, setGenerosData] = useState({});
 
   useEffect(() => {
     if (!usuario.id) {
-      navigate('/login');
+      navigate('/');
       return;
     }
 

@@ -13,18 +13,51 @@ def enviar_correo_bienvenida(destinatario_email, nombre_usuario):
     mensaje['To'] = destinatario_email
     mensaje['Subject'] = '¡Bienvenido a la aplicación!'
 
-    cuerpo = f"""
-    Hola {nombre_usuario},
-
-    ¡Bienvenido a nuestra aplicación! Estamos encantados de tenerte a bordo.
-
-    Si tienes alguna pregunta o necesitas ayuda, no dudes en escribirnos.
-
-    Saludos,
-    El equipo de la aplicación
+    cuerpo_html = f"""
+    <html>
+    <head>
+      <style>
+        body {{
+          font-family: Arial, sans-serif;
+          background-color: #f5f5f5;
+          padding: 20px;
+        }}
+        .container {{
+          background-color: #ffffff;
+          padding: 30px;
+          border-radius: 8px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+          max-width: 600px;
+          margin: auto;
+        }}
+        h1 {{
+          color: #2c3e50;
+        }}
+        p {{
+          font-size: 16px;
+          color: #333333;
+          line-height: 1.6;
+        }}
+        .footer {{
+          margin-top: 20px;
+          font-size: 14px;
+          color: #777;
+        }}
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <h1>¡Bienvenido, {nombre_usuario}!</h1>
+        <p>Gracias por registrarte en nuestra aplicación. Estamos encantados de tenerte con nosotros.</p>
+        <p>Explora, organiza y disfruta de tus películas favoritas. Si necesitas ayuda, no dudes en contactarnos.</p>
+        <p class="footer">El equipo de la aplicación</p>
+      </div>
+    </body>
+    </html>
     """
 
-    mensaje.attach(MIMEText(cuerpo, 'plain'))
+
+    mensaje.attach(MIMEText(cuerpo_html, 'html'))
 
     try:
         # Conexión con el servidor SMTP de Gmail
