@@ -42,13 +42,21 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
                   <i className="fas fa-plus me-1"></i>Añadir Nueva Película
                 </button>
               </Link>
+            </div>
+            <div className="navbar-links d-flex align-items-center">
+              <Link to="/logout"> 
+                <button className="btn btn-logout"> 
+                  <i className="fas fa-sign-out-alt me-1"></i>Cerrar Sesión
+                </button>
+              </Link>
+            </div>
               <Link to="/dashboard">
                 <div className="user-avatar">{userName.charAt(0).toUpperCase()}</div>
               </Link>
             </div>
           </div>
         </div>
-      </div>
+      
     </nav>
   );
 };

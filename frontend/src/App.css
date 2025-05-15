@@ -85,6 +85,21 @@
 
 .btn-add:hover {
   background-color: #883941;
+  color: #1F2937;
+}
+
+.btn-logout {
+  background-color: #4a7feb;
+  color: white;
+  border-radius: 6px;
+  font-size: 14px;
+  padding: 5px 15px;
+  border: none;
+  margin-left: 10px;
+}
+.btn-logout:hover {
+  background-color: #3b5bbf;
+  color:#1F2937
 }
 
 .user-avatar {

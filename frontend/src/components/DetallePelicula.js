@@ -26,10 +26,16 @@ const DetallePelicula = () => {
       </button>
       <div className="detalle-content">
         <div className="detalle-image">
-          <img
-                src={`http://localhost:3001${pelicula.imagen.startsWith('/') ? '' : '/'}${pelicula.imagen}`}
-                alt={pelicula.nombre}
-          />
+          {pelicula.imagen ? (
+            <img
+              src={`http://localhost:3001${pelicula.imagen.startsWith('/') ? '' : '/'}${pelicula.imagen}`}
+              alt={pelicula.nombre}
+            />
+          ) : (
+            <div className="no-image">
+              <h3>Sin imagen disponible</h3>
+            </div>
+          )}
         </div>
         <div className="detalle-info">
           <h1>{pelicula.nombre}</h1>
