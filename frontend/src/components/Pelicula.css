@@ -6,14 +6,16 @@ body {
   border-radius: 8px;
   display: flex;
   overflow: hidden;
+  text-decoration: none;
   transition: transform 0.3s, box-shadow 0.3s;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
   width: 240px;
   height: 100%;
   background-color: #1F2937;
 }
 .movie-card h5 {
   color: #F9FAFB;
+  text-decoration: none;
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 10px;
@@ -61,6 +63,23 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-decoration: none;
+}
+
+.movie-title:hover {
+  text-decoration: none; /* Asegura que no se subraye al pasar el mouse */
+}
+
+/* Eliminar subrayado de los géneros y puntuaciones */
+.movie-year-genre,
+.movie-rating {
+  text-decoration: none; /* Elimina el subrayado */
+  color: inherit; /* Mantiene el color actual */
+}
+
+.movie-year-genre:hover,
+.movie-rating:hover {
+  text-decoration: none; /* Asegura que no se subraye al pasar el mouse */
 }
 
 .movie-details {
@@ -147,14 +166,15 @@ body {
 }
 
 #botones .btn-primary {
-  background-color: #202068;
+  background-color: #1F2937;
   color: white;
+  width: 20px;
 }
 
 #botones .btn-outline-primary {
   background-color: transparent;
   color: #1a1a2e;
-  border: 1px solid #202068;
+  border: 1px solid #1F2937;
 }
 
 
@@ -165,7 +185,7 @@ body {
 .form-container {
   max-width: 800px; /* Más ancho para pantallas grandes */
   margin: 30px auto;
-  background-color: #ffffff;
+  background-color: #1F2937;
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -176,8 +196,9 @@ body {
   font-size: 28px;
   font-weight: bold;
   margin-bottom: 30px;
-  color: #1a1a2e;
+  color: #F9FAFB;
 }
+
 
 .form {
   display: flex;
@@ -199,7 +220,7 @@ body {
 .form-group label {
   font-weight: bold;
   margin-bottom: 5px;
-  color: #333;
+  color: #F9FAFB;
 }
 
 .form-control {
@@ -294,7 +315,7 @@ textarea.form-control {
 
 /* Filtros */
 .filters {
-  background-color: #F9FAFB;
+  background-color: #1F2937;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -304,6 +325,7 @@ textarea.form-control {
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 15px;
+  color: #ddd;
 }
 
 .filter-list {
