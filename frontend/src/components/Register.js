@@ -105,7 +105,7 @@ function Register() {
              </div>
    
              <button type="submit" className="btn btn-secondary w-100">
-               Puto Dokku de Mierda
+               Registrar
              </button>
              <p className="mt-3 text-center">
                ¿Ya tienes cuenta?{' '}
