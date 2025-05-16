@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import Logo from '../img/logo4.png'; // Asegúrate de que la ruta sea correcta
+import './Register.css'; // Asegúrate de que la ruta sea correcta
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -39,17 +41,23 @@ function Register() {
     };
 
    return (
-       <div className="d-flex align-items-center justify-content-center vh-100 bg-light">
-         <div className="text">
+       <div className="register-container">
+         <div className="register-content">
+          <div className="register-image">
+                <img
+                  src={Logo}
+                  alt="Logo FilmTracker"
+                  className="logo-large-register"
+                />
+            </div>
            <form
              onSubmit={handleSubmit}
-             className="bg-white p-5 rounded shadow-sm w-100"
-             style={{ maxWidth: '400px' }}
+             className="register-form"
            >
-             <h2 className="text-center mb-4 text-black">Formulario de Registro</h2>
+             <h2 className="text-center mb-4">Formulario de Registro</h2>
 
              <div className="mb-3">
-               <label htmlFor="nombre" className="form-label text-black">
+               <label htmlFor="nombre" className="form-label">
                  Nombre
                </label>
                <input
@@ -65,7 +73,7 @@ function Register() {
               </div>
    
              <div className="mb-3">
-               <label htmlFor="email" className="form-label text-black">
+               <label htmlFor="email" className="form-label">
                  Correo electrónico
                </label>
                <input
@@ -81,7 +89,7 @@ function Register() {
              </div>
    
              <div className="mb-4">
-               <label htmlFor="password" className="form-label text-black">
+               <label htmlFor="password" className="form-label">
                  Contraseña
                </label>
                <input
@@ -97,7 +105,7 @@ function Register() {
              </div>
    
              <button type="submit" className="btn btn-secondary w-100">
-               Entrar
+               Puto Dokku de Mierda
              </button>
              <p className="mt-3 text-center">
                ¿Ya tienes cuenta?{' '}
@@ -110,4 +118,6 @@ function Register() {
        </div>
      );
    }
+   console.log(document.styleSheets);
+
 export default Register;

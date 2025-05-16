@@ -97,5 +97,16 @@ export const eliminarPelicula = async (id) => {
   }
 };
 
+// Obtener películas por usuario
+export const obtenerPeliculasPorUsuario = async (usuarioId) => {
+  try {
+    const response = await axios.get(`${apiUrl}/peliculas?usuarioId=${usuarioId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener películas por usuario", error);
+    throw error;
+  }
+};
+
 
 

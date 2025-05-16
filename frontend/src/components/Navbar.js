@@ -1,24 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../img/logo2.jpeg'; // Asegúrate de que la ruta sea correcta
+import logo from '../img/logo4.png'; // Asegúrate de que la ruta sea correcta
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
 
 
 const Navbar = ({ searchTerm, setSearchTerm }) => {
   const userName = sessionStorage.getItem('usuarioName') || 'U';
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    try {
-    await axios.post("/api/logout", {}, { withCredentials: true }); // si usas cookies
-    sessionStorage.clear(); // limpia todo lo que haya en sessionStorage
-    localStorage.clear(); // por si acaso
-    navigate("/"); // redirige al login
-  } catch (error) {
-    console.error("Error al cerrar sesión:", error);
-  }
-};
+  const handleLogout = () => {
+    // Si tienes que hacer logout en el backend, usa fetch:
+    fetch("/api/usuarios/logout", { method: "POST", credentials: "include" })
+      .then(() => {
+        sessionStorage.clear();
+        localStorage.clear();
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("Error al cerrar sesión:", error);
+      });
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark">

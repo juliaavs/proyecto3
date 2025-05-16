@@ -29,6 +29,7 @@ function Login() {
         sessionStorage.setItem('usuarioId', data.usuarioId);
         sessionStorage.setItem('usuarioName', data.usuarioName);
         sessionStorage.setItem('usuarioEmail', data.usuarioEmail);
+        console.log('Usuario logueado:', data);
 
         // Mostrar mensaje de bienvenida con SweetAlert2
         Swal.fire({
@@ -65,7 +66,7 @@ function Login() {
           <img
             src={Logo}
             alt="Logo FilmTracker"
-            className="logo-large"
+            className="logo-large-login"
           />
         </div>
         <form
