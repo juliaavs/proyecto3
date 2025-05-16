@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../img/logo2.jpeg'; // Asegúrate de que la ruta sea correcta
+import logo from '../img/logo4.png'; // Asegúrate de que la ruta sea correcta
 
 const Navbar = ({ searchTerm, setSearchTerm }) => {
   const userName = sessionStorage.getItem('userName') || 'U';
@@ -15,7 +15,7 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
             }// Ruta de la imagen
             alt="FilmTracker Logo"
             className="navbar-logo"
-            style={{ width: '170px', height: '80px', display: '-moz-initial'}} // Ajusta el tamaño según sea necesario
+            style={{ width: '220px', height: '130px', display: '-moz-initial'}} // Ajusta el tamaño según sea necesario
           />
       </Link>        
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" 

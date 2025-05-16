@@ -1,5 +1,15 @@
 body {
-  background-color:#111827;
+  background-color:#111827 !important; /* Fondo oscuro */
+}
+
+/* Eliminar subrayado de todos los enlaces */
+a {
+  text-decoration: none !important; /* Elimina el subrayado */
+  color: inherit; /* Mantiene el color del texto */
+}
+
+a:hover {
+  text-decoration: none !important; /* Asegura que no se subraye al pasar el mouse */
 }
 
 .movie-card {
@@ -8,10 +18,10 @@ body {
   overflow: hidden;
   text-decoration: none;
   transition: transform 0.3s, box-shadow 0.3s;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
   width: 240px;
   height: 100%;
-  background-color: #1F2937;
+  background-color: #1F2937 !important;
 }
 .movie-card h5 {
   color: #F9FAFB;
@@ -66,21 +76,6 @@ body {
   text-decoration: none;
 }
 
-.movie-title:hover {
-  text-decoration: none; /* Asegura que no se subraye al pasar el mouse */
-}
-
-/* Eliminar subrayado de los géneros y puntuaciones */
-.movie-year-genre,
-.movie-rating {
-  text-decoration: none; /* Elimina el subrayado */
-  color: inherit; /* Mantiene el color actual */
-}
-
-.movie-year-genre:hover,
-.movie-rating:hover {
-  text-decoration: none; /* Asegura que no se subraye al pasar el mouse */
-}
 
 .movie-details {
   color: #F9FAFB;

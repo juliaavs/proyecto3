@@ -1,0 +1,92 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Ocupa toda la altura de la pantalla */
+  background-color: #111827; /* Fondo claro */
+  padding: 20px;
+}
+
+.login-content {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Espacio entre la imagen y el formulario */
+  background-color: #1F2937;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.login-image {
+  flex: 1;
+}
+
+.logo-large {
+  max-width: 100%;
+  height: auto;
+  max-height: 300px; /* Limita la altura máxima */
+}
+
+.login-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.login-form h2 {
+  color: #F9FAFB; /* Color del texto */
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.login-form .form-label {
+  font-weight: bold;
+  color: #F9FAFB;
+}
+
+.login-form .form-control {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.login-form .form-control:focus {
+  outline: none;
+  border-color: #4a7feb;
+  box-shadow: 0 0 5px rgba(74, 127, 235, 0.5);
+}
+
+.login-form .btn {
+  background-color: #4a7feb;
+  color: white;
+  font-size: 16px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-form .btn:hover {
+  background-color: #3a66d6;
+}
+
+.login-form p {
+  font-size: 14px;
+  color: #F9FAFB;
+}
+
+.login-form .text-primary {
+  color: #4a7feb;
+  text-decoration: none;
+}
+
+.login-form .text-primary:hover {
+  text-decoration: underline;
+}

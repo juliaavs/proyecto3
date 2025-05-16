@@ -1,23 +1,20 @@
 import React, { useState } from 'react';
-import { Link, useNavigate} from 'react-router-dom';
-import Logo from '../img/logo2.jpeg'; // Asegúrate de que la ruta sea correcta
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-// Componente de inicio de sesión
+import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import Logo from '../img/logo4.png'; // Asegúrate de que la ruta sea correcta
+import './Login.css'; // Importar estilos personalizados
 
 function Login() {
   const [LoginData, setLoginData] = useState({
     email: '',
-    password: ''
+    password: '',
   });
   const navigate = useNavigate();
 
-  // Maneja el cambio de los campos de entrada
   const handleChange = (e) => {
     setLoginData({ ...LoginData, [e.target.name]: e.target.value });
   };
 
-  // Maneja el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -32,38 +29,52 @@ function Login() {
         sessionStorage.setItem('usuarioId', data.usuarioId);
         sessionStorage.setItem('usuarioName', data.usuarioName);
         sessionStorage.setItem('usuarioEmail', data.usuarioEmail);
-        alert(`¡Bienvenido, ${data.usuarioName}!`);
-        console.log('Usuario autenticado:', data.usuarioName);
-        console.log('ID de usuario:', data.usuarioId);
-        navigate('/home');
+
+        // Mostrar mensaje de bienvenida con SweetAlert2
+        Swal.fire({
+          icon: 'success',
+          title: `¡Bienvenido, ${data.usuarioName}!`,
+          text: 'Has iniciado sesión correctamente.',
+          timer: 3000, // El mensaje desaparecerá automáticamente después de 3 segundos
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
+
+        navigate('/home'); // Redirige a la página principal
       } else {
-        alert(`Error: ${data.error}`);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: data.error || 'Hubo un problema al iniciar sesión.',
+        });
       }
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
-      alert('Hubo un error al iniciar sesión.');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hubo un error al iniciar sesión.',
+      });
     }
   };
 
   return (
-    <div className="d-flex align-items-center justify-content-center vh-100 bg-light">
-        
+    <div className="login-container">
+      <div className="login-content">
+        <div className="login-image">
+          <img
+            src={Logo}
+            alt="Logo FilmTracker"
+            className="logo-large"
+          />
+        </div>
         <form
           onSubmit={handleSubmit}
-          className="bg-white p-5 rounded shadow-sm w-100"
-          style={{ maxWidth: '400px' }}
+          className="login-form"
         >
-          <div className="d-flex justify-content-center mb-4">
-            <img
-              src={Logo}
-              style={{ width: '200px', height: '100px' }} // Ajusta el tamaño según sea necesario
-              alt="Logo FilmTracker"
-            />
-          </div>
-          <h2 className="text-center mb-4 text-black">Iniciar Sesión</h2>
-
+          <h2 className="text-center mb-4">Iniciar Sesión</h2>
           <div className="mb-3">
-            <label htmlFor="email" className="form-label text-black">
+            <label htmlFor="email" className="form-label">
               Correo electrónico
             </label>
             <input
@@ -77,9 +88,8 @@ function Login() {
               placeholder="ejemplo@correo.com"
             />
           </div>
-
           <div className="mb-4">
-            <label htmlFor="password" className="form-label text-black">
+            <label htmlFor="password" className="form-label">
               Contraseña
             </label>
             <input
@@ -93,7 +103,6 @@ function Login() {
               placeholder="Tu contraseña"
             />
           </div>
-
           <button type="submit" className="btn btn-secondary w-100">
             Entrar
           </button>
@@ -105,6 +114,7 @@ function Login() {
           </p>
         </form>
       </div>
+    </div>
   );
 }
 
