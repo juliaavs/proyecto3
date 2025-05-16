@@ -93,7 +93,7 @@ function AddPelicula() {
 
   return (
     <div className="form-container">
-      <h1 className="form-title">Añadir Nueva Película</h1>
+      <h1 className="form-title">🎬 Añadir Nueva Película</h1>
       <form onSubmit={handleSubmit} encType="multipart/form-data" className="form">
         <div className="form-row">
           <div className="form-group">

@@ -30,7 +30,7 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
             }// Ruta de la imagen
             alt="FilmTracker Logo"
             className="navbar-logo"
-            style={{ width: '170px', height: '80px', display: '-moz-initial'}} // Ajusta el tamaño según sea necesario
+            style={{ width: '220px', height: '130px', display: '-moz-initial'}} // Ajusta el tamaño según sea necesario
           />
       </Link>        
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" 

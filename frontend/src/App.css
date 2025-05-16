@@ -46,8 +46,21 @@
 
 .navbar {
   background-color: #1F2937 !important;
-  padding: 15px 20px;
+  padding: 10px 20px; /* Ajusta el padding para mantener el contenido centrado */
+  height: 80px; /* Altura fija del navbar */
+  display: flex;
+  align-items: center; /* Centra verticalmente el contenido */
 }
+
+.navbar-logo {
+  max-height: 100%; /* Asegura que el logo no exceda la altura del navbar */
+  height: 50px; /* Tamaño del logo */
+  width: auto; /* Mantiene la proporción del logo */
+  object-fit: contain; /* Ajusta el logo dentro del contenedor */
+}
+
+
+
 
 .navbar-brand {
   font-weight: bold;
@@ -57,7 +70,7 @@
 
 .search-box {
   position: relative;
-  width: 300px;
+  width: 400px;
 }
 
 .search-input {
