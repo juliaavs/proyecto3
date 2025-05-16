@@ -8,11 +8,18 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const UserDashboard = () => {
   const navigate = useNavigate();
-  const [usuario, setUsuario] = useState({
+  const [usuario] = useState({
     nombre: sessionStorage.getItem('usuarioName') || 'Usuario',
     id: sessionStorage.getItem('usuarioId'),
     email: sessionStorage.getItem('usuarioEmail') || 'Desconocido'
   });
+
+  console.log('Usuario:', {
+    nombre: sessionStorage.getItem('usuarioName'),
+    id: sessionStorage.getItem('usuarioId'),
+    email: sessionStorage.getItem('usuarioEmail'),
+  });
+
   const [peliculas, setPeliculas] = useState([]);
   const [generosData, setGenerosData] = useState({});
 
@@ -37,7 +44,7 @@ const UserDashboard = () => {
     peliculas.forEach((peli) => {
       generos[peli.genero] = (generos[peli.genero] || 0) + 1;
     });
-
+    
     setGenerosData({
       labels: Object.keys(generos),
       datasets: [
@@ -65,6 +72,19 @@ const UserDashboard = () => {
     });
   };
 
+  const chartOptions = {
+    plugins: {
+      legend: {
+        labels: {
+          color: 'white', // Cambia el color del texto de la leyenda
+          font: {
+            size: 14, // Tamaño de la fuente
+          },
+        },
+      },
+    },
+  };
+
   return (
     <div className="dashboard-container">
       <h1 className="dashboard-title">Bienvenido, {usuario.nombre}</h1>
@@ -78,7 +98,8 @@ const UserDashboard = () => {
         <div className="charts">
           <h2>Películas por Género</h2>
           {generosData.labels ? (
-            <Pie data={generosData} />
+            
+            <Pie data={generosData} options={chartOptions} />
           ) : (
             <p>Cargando datos...</p>
           )}
