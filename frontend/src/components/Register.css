@@ -1,0 +1,94 @@
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Ocupa toda la altura de la pantalla */
+    background-color: #111827; /* Fondo claro */
+    padding: 20px;
+}
+
+.register-content {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Espacio entre la imagen y el formulario */
+    background-color: #1F2937;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.register-image {
+    flex: 1;
+    
+    
+}
+.logo-large-register{
+    max-width: 100%;
+    height: auto;
+    max-height: 300px; /* Limita la altura máxima */
+}
+
+.register-form {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.register-form h2 {
+    color: #F9FAFB;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 18px;
+}
+
+.register-form .form-label {
+    color: #cbd5e1;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.register-form .form-control {
+    padding: 12px;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    color: #f1f5f9;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.register-form .form-control:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 5px rgba(74, 127, 235, 0.5);
+}
+
+.register-form .btn {
+     background-color: #4a7feb;
+    color: white;
+    font-size: 16px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.register-form .btn:hover {
+    background-color: #3a66d6;
+}
+
+.register-form p {
+    font-size: 14px;
+    color: #F9FAFB;
+}
+
+.register-form .text-primary {
+    color: #4a7feb;
+    text-decoration: none;
+}
+
+.register-form .text-primary:hover {
+    text-decoration: underline;
+}

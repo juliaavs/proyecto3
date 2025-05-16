@@ -24,6 +24,17 @@ export const iniciarSesion = async (loginData) => {
   }
 };
 
+// Cerrar sesion
+export const cerrarSesion = async () => {
+  try {
+    const response = await axios.post(`${apiUrl}/usuarios`);
+    return response.data;
+  } catch (error) {
+    console.error("Error al cerrar sesión", error);
+    throw error;
+  }
+};
+
 
 //añadir pelis
 export const añadirPelicula = async (peliculaData) => {
@@ -82,6 +93,17 @@ export const eliminarPelicula = async (id) => {
     return response.data;
   } catch (error) {
     console.error("Error al eliminar película", error);
+    throw error;
+  }
+};
+
+// Obtener películas por usuario
+export const obtenerPeliculasPorUsuario = async (usuarioId) => {
+  try {
+    const response = await axios.get(`${apiUrl}/peliculas?usuarioId=${usuarioId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener películas por usuario", error);
     throw error;
   }
 };

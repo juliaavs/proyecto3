@@ -6,30 +6,33 @@ import './UserDashboard.css';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+
+
 const UserDashboard = () => {
   const navigate = useNavigate();
-  const [usuario] = useState({
-    nombre: sessionStorage.getItem('usuarioName') || 'Usuario',
-    id: sessionStorage.getItem('usuarioId'),
-    email: sessionStorage.getItem('usuarioEmail') || 'Desconocido'
-  });
-
-  console.log('Usuario:', {
-    nombre: sessionStorage.getItem('usuarioName'),
-    id: sessionStorage.getItem('usuarioId'),
-    email: sessionStorage.getItem('usuarioEmail'),
-  });
-
+  const [usuario, setUsuario] = useState(null);
   const [peliculas, setPeliculas] = useState([]);
-  const [generosData, setGenerosData] = useState({});
+  const [generosData, setGenerosData] = useState(null);
 
+  // Cargar datos del usuario
   useEffect(() => {
-    if (!usuario.id) {
+    const id = sessionStorage.getItem('usuarioId');
+    if (!id) {
       navigate('/');
       return;
     }
 
-    // Obtener las películas vistas por el usuario
+    setUsuario({
+      nombre: sessionStorage.getItem('usuarioName') || 'Usuario',
+      id,
+      email: sessionStorage.getItem('usuarioEmail') || 'Desconocido',
+    });
+  }, [navigate]);
+
+  // Cargar películas y procesar géneros
+  useEffect(() => {
+    if (!usuario?.id) return;
+
     fetch(`http://localhost:3001/api/peliculas?usuarioId=${usuario.id}`)
       .then((res) => res.json())
       .then((data) => {
@@ -37,14 +40,14 @@ const UserDashboard = () => {
         calcularGeneros(data);
       })
       .catch((err) => console.error('Error al obtener películas:', err));
-  }, [usuario.id, navigate]);
+  }, [usuario]);
 
   const calcularGeneros = (peliculas) => {
     const generos = {};
     peliculas.forEach((peli) => {
       generos[peli.genero] = (generos[peli.genero] || 0) + 1;
     });
-    
+
     setGenerosData({
       labels: Object.keys(generos),
       datasets: [
@@ -52,20 +55,12 @@ const UserDashboard = () => {
           label: 'Películas por Género',
           data: Object.values(generos),
           backgroundColor: [
-            '#FF6384',
-            '#36A2EB',
-            '#FFCE56',
-            '#4BC0C0',
-            '#9966FF',
-            '#FF9F40',
+            '#FF6384', '#36A2EB', '#FFCE56',
+            '#4BC0C0', '#9966FF', '#FF9F40',
           ],
           hoverBackgroundColor: [
-            '#FF6384',
-            '#36A2EB',
-            '#FFCE56',
-            '#4BC0C0',
-            '#9966FF',
-            '#FF9F40',
+            '#FF6384', '#36A2EB', '#FFCE56',
+            '#4BC0C0', '#9966FF', '#FF9F40',
           ],
         },
       ],
@@ -76,14 +71,15 @@ const UserDashboard = () => {
     plugins: {
       legend: {
         labels: {
-          color: 'white', // Cambia el color del texto de la leyenda
-          font: {
-            size: 14, // Tamaño de la fuente
-          },
+          color: 'white',
+          font: { size: 14 },
         },
       },
     },
   };
+
+  // NO renderices nada hasta que `usuario` esté listo
+  if (!usuario) return <p>Cargando usuario...</p>;
 
   return (
     <div className="dashboard-container">
@@ -92,20 +88,23 @@ const UserDashboard = () => {
         <div className="user-info">
           <h2>Información del Usuario</h2>
           <p><strong>Nombre:</strong> {usuario.nombre}</p>
-            <p><strong>Correo Electrónico:</strong> {usuario.email}</p>
+          <p><strong>Correo Electrónico:</strong> {usuario.email}</p>
           <p><strong>Total de Películas Vistas:</strong> {peliculas.length}</p>
         </div>
         <div className="charts">
           <h2>Películas por Género</h2>
-          {generosData.labels ? (
-            
+          {generosData && generosData.labels.length > 0 ? (
             <Pie data={generosData} options={chartOptions} />
           ) : (
-            <p>Cargando datos...</p>
+            <p>No hay datos de películas aún.</p>
           )}
         </div>
       </div>
+      <button className="btn-home" onClick={() => navigate('/home')}>
+      Volver a la Página Principal
+      </button>
     </div>
+    
   );
 };
 

@@ -65,7 +65,8 @@ router.post("/login", async (req, res) => {
     res.status(200).json({
       mensaje: 'Inicio de sesion exitoso',
       usuarioId: usuario._id,
-      usuarioName: usuario.nombre
+      usuarioName: usuario.nombre,
+      usuarioEmail: usuario.email
     });
     
   } catch (err) {
@@ -76,10 +77,12 @@ router.post("/login", async (req, res) => {
 // Ruta para cerrar sesion
 
 router.post("/logout", (req, res) => {
-  
-  
+  // Si no usas cookies ni sesiones, simplemente responde con éxito
   res.status(200).json({ message: "Sesión cerrada exitosamente" });
 });
 
-
 module.exports = router;
+  
+  
+
+

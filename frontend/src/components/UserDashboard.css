@@ -82,3 +82,19 @@
   color: white;
 }
 
+.btn-home {
+  display: block;
+  margin: 30px auto 0 auto; /* Centrado y separación superior */
+  background-color: #283648;
+  color: white;
+  font-size: 16px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.btn-home:hover {
+  background-color: #3b5bbf;
+}
+
