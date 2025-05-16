@@ -1,9 +1,24 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../img/logo2.jpeg'; // Asegúrate de que la ruta sea correcta
+import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+
 
 const Navbar = ({ searchTerm, setSearchTerm }) => {
-  const userName = sessionStorage.getItem('userName') || 'U';
+  const userName = sessionStorage.getItem('usuarioName') || 'U';
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+    await axios.post("/api/logout", {}, { withCredentials: true }); // si usas cookies
+    sessionStorage.clear(); // limpia todo lo que haya en sessionStorage
+    localStorage.clear(); // por si acaso
+    navigate("/"); // redirige al login
+  } catch (error) {
+    console.error("Error al cerrar sesión:", error);
+  }
+};
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark">
@@ -44,11 +59,10 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
               </Link>
             </div>
             <div className="navbar-links d-flex align-items-center">
-              <Link to="/logout"> 
-                <button className="btn btn-logout"> 
-                  <i className="fas fa-sign-out-alt me-1"></i>Cerrar Sesión
-                </button>
-              </Link>
+              {/* ✅ Botón de logout corregido */}
+              <button onClick={handleLogout} className="btn btn-logout">
+                <i className="fas fa-sign-out-alt me-1"></i>Cerrar Sesión
+              </button>
             </div>
               <Link to="/dashboard">
                 <div className="user-avatar">{userName.charAt(0).toUpperCase()}</div>

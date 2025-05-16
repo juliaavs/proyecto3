@@ -24,6 +24,17 @@ export const iniciarSesion = async (loginData) => {
   }
 };
 
+// Cerrar sesion
+export const cerrarSesion = async () => {
+  try {
+    const response = await axios.post(`${apiUrl}/usuarios`);
+    return response.data;
+  } catch (error) {
+    console.error("Error al cerrar sesión", error);
+    throw error;
+  }
+};
+
 
 //añadir pelis
 export const añadirPelicula = async (peliculaData) => {
