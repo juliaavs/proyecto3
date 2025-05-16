@@ -8,13 +8,14 @@ const path = require('path');
 
 const app = express();
 //const PORT = 3001;
-
-const PORT=process.env.PORT || 3001;
-
+const PORT = process.env.PORT || 3001; // Cambia el puerto a 3001 si no está definido en el entorno
 app.get('/', (req, res) => {
   res.send('dokku');
 }
 );
+
+
+
 
 
 
