@@ -1,0 +1,100 @@
+
+.charts canvas{
+    max-width: 100%;
+    height: auto;
+    max-height: 300px;
+}
+
+.dashboard-container {
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 15px;
+  background-color: #1F2937;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Ajustar el diseño para pantallas pequeñas */
+@media (max-width: 768px) {
+    .dashboard-content {
+      flex-direction: column; /* Cambia a diseño vertical */
+    }
+    .user-info, .charts {
+      flex: none; /* Elimina el flex para que ocupen el 100% */
+      width: 100%; /* Asegúrate de que ocupen todo el ancho */
+      margin-bottom: 20px; /* Espacio entre los elementos */
+    }
+}
+
+.dashboard-title {
+  text-align: center;
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.dashboard-content {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.user-info {
+  flex: 1;
+  background-color: #283648;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-info h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: white;
+}
+
+.user-info p {
+  font-size: 16px;
+  margin: 5px 0;
+  color: white;
+}
+
+.charts {
+  flex: 2;
+  background-color: #283648;
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.charts canvas {
+  max-width: 100%;
+  height: auto;
+  max-height: 300px;
+  color: white;
+}
+
+.charts h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: white;
+}
+
+.btn-home {
+  display: block;
+  margin: 30px auto 0 auto; /* Centrado y separación superior */
+  background-color: #283648;
+  color: white;
+  font-size: 16px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.btn-home:hover {
+  background-color: #3b5bbf;
+}
+

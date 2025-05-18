@@ -1,0 +1,147 @@
+/*
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+*/
+
+
+.mb-4{
+  font-weight: bold;
+}
+
+.navbar {
+  background-color: #1F2937 !important;
+  padding: 10px 20px; /* Ajusta el padding para mantener el contenido centrado */
+  height: 80px; /* Altura fija del navbar */
+  display: flex;
+  align-items: center; /* Centra verticalmente el contenido */
+}
+
+.navbar-logo {
+  max-height: 100%; /* Asegura que el logo no exceda la altura del navbar */
+  height: 50px; /* Tamaño del logo */
+  width: auto; /* Mantiene la proporción del logo */
+  object-fit: contain; /* Ajusta el logo dentro del contenedor */
+}
+
+
+
+
+.navbar-brand {
+  font-weight: bold;
+  font-size: 24px;
+  color: white !important;
+}
+
+.search-box {
+  position: relative;
+  width: 400px;
+}
+
+.search-input {
+  border-radius: 20px;
+  padding-left: 40px;
+  background-color: #ffffff;
+  border: none;
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  top: 10px;
+  color: #999;
+}
+
+.btn-add {
+  background-color: #e63946;
+  color: white;
+  border-radius: 6px;
+  font-size: 14px;
+  padding: 5px 15px;
+  border: none;
+}
+
+.btn-add:hover {
+  background-color: #883941;
+  color: #1F2937;
+}
+
+.btn-logout {
+  background-color: #4a7feb;
+  color: white;
+  border-radius: 6px;
+  font-size: 14px;
+  padding: 5px 15px;
+  border: none;
+  margin-left: 10px;
+}
+.btn-logout:hover {
+  background-color: #3b5bbf;
+  color:#1F2937
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #4a7feb;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-left: 15px;
+}
+
+/* Para hacer el navbar responsive */
+@media (max-width: 768px) {
+  .search-box {
+    width: 100%;
+    margin: 10px 0;
+  }
+  
+  .navbar-content {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+  
+  .user-controls {
+    margin-top: 10px;
+    align-self: flex-end;
+  }
+}
