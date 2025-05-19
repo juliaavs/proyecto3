@@ -10,6 +10,15 @@ const router = require('./routes/routes');
 const path = require('path');
 
 const app = express();
+//const PORT = 3001;
+const PORT = process.env.PORT || 3001; // Cambia el puerto a 3001 si no está definido en el entorno
+app.get('/', (req, res) => {
+  res.send('dokku');
+}
+);
+
+
+
 const HTTPS_PORT = 3443; // Puerto seguro
 const HTTP_PORT = 3001; // Puerto opcional si quieres redirigir desde HTTP
 
