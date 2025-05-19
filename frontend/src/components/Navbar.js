@@ -10,7 +10,7 @@ const Navbar = ({ searchTerm, setSearchTerm }) => {
 
   const handleLogout = () => {
     // Si tienes que hacer logout en el backend, usa fetch:
-    fetch("/api/usuarios/logout", { method: "POST", credentials: "include" })
+    fetch('${process.env.REACT_APP_API_URL}/api/usuarios/logout', { method: "POST", credentials: "include" })
       .then(() => {
         sessionStorage.clear();
         localStorage.clear();

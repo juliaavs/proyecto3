@@ -17,7 +17,7 @@ function EditarPelicula() {
   });
 
   useEffect(() => {
-    fetch(`http://localhost:3001/api/peliculas/${id}`)
+    fetch(`${process.env.REACT_APP_API_URL}/api/peliculas/${id}`)
       .then(res => res.json())
       .then(data => setFormData(data))
       .catch(err => console.error('Error al obtener película:', err));
@@ -36,7 +36,7 @@ function EditarPelicula() {
     const data = new FormData();
     Object.keys(formData).forEach((key) => data.append(key, formData[key]));
   
-    fetch(`http://localhost:3001/api/peliculas/${id}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/api/peliculas/${id}`, {
       method: 'PUT',
       body: data,
     })

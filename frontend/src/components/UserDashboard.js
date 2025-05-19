@@ -33,7 +33,7 @@ const UserDashboard = () => {
   useEffect(() => {
     if (!usuario?.id) return;
 
-    fetch(`http://localhost:3001/api/peliculas?usuarioId=${usuario.id}`)
+    fetch(`${process.env.REACT_APP_API_URL}/api/peliculas?usuarioId=${usuario.id}`)
       .then((res) => res.json())
       .then((data) => {
         setPeliculas(data);

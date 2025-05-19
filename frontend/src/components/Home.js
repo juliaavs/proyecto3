@@ -19,7 +19,7 @@ const Home = ({ searchTerm }) => {
     }
 
     // Obtener todas las películas del usuario
-    fetch(`http://localhost:3001/api/peliculas?usuarioId=${usuarioId}`)
+    fetch(`${process.env.REACT_APP_API_URL}/api/peliculas?usuarioId=${usuarioId}`)
       .then((res) => res.json())
       .then((data) => {
         setPeliculas(data);
@@ -48,7 +48,7 @@ const Home = ({ searchTerm }) => {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:3001/api/peliculas/${id}`, {
+        fetch(`${process.env.REACT_APP_API_URL}/api/peliculas/${id}`, {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ usuarioId }),

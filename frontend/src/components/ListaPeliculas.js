@@ -14,7 +14,7 @@ function ListaPeliculas() {
   }, []);
 
   const fetchPeliculas = () => {
-    fetch('http://localhost:3001/api/peliculas')
+    fetch('${process.env.REACT_APP_API_URL}/api/peliculas')
       .then(res => res.json())
       .then(data => setPeliculas(data))
       .catch(err => console.error('Error al obtener películas:', err));
@@ -42,7 +42,7 @@ function ListaPeliculas() {
   };
 
   const eliminarPelicula = (id) => {
-    fetch(`http://localhost:3001/api/peliculas/${id}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/api/peliculas/${id}`, {
       method: 'DELETE'
     })
       .then(res => {
