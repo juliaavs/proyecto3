@@ -9,7 +9,7 @@ const DetallePelicula = () => {
 
   useEffect(() => {
     // Obtener los detalles de la película desde el backend
-    fetch(`http://localhost:3001/api/peliculas/${id}`)
+    fetch(`https://localhost:3001/api/peliculas/${id}`)
       .then((res) => res.json())
       .then((data) => setPelicula(data))
       .catch((err) => console.error('Error al obtener los detalles de la película:', err));

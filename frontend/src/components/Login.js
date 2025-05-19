@@ -18,7 +18,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const respuesta = await fetch('http://localhost:3001/api/usuarios/login', {
+      const respuesta = await fetch('https://localhost:3001/api/usuarios/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(LoginData),

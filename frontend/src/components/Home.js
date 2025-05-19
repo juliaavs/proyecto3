@@ -19,7 +19,7 @@ const Home = ({ searchTerm }) => {
     }
 
     // Obtener todas las películas del usuario
-    fetch(`http://localhost:3001/api/peliculas?usuarioId=${usuarioId}`)
+    fetch(`https://localhost:3001/api/peliculas?usuarioId=${usuarioId}`)
       .then((res) => res.json())
       .then((data) => {
         setPeliculas(data);

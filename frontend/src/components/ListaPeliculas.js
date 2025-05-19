@@ -14,7 +14,7 @@ function ListaPeliculas() {
   }, []);
 
   const fetchPeliculas = () => {
-    fetch('http://localhost:3001/api/peliculas')
+    fetch('https://localhost:3001/api/peliculas')
       .then(res => res.json())
       .then(data => setPeliculas(data))
       .catch(err => console.error('Error al obtener películas:', err));

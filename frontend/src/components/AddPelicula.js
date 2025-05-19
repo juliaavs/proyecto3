@@ -67,7 +67,7 @@ function AddPelicula() {
       console.log(pair[0] + ':', pair[1]);
     }
   
-    fetch('http://localhost:3001/api/peliculas/add', {
+    fetch('https://localhost:3001/api/peliculas/add', {
       method: 'POST',
       body: data,
     })
