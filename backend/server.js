@@ -11,12 +11,6 @@ const path = require('path');
 
 const app = express();
 //const PORT = 3001;
-const PORT = process.env.PORT || 3001; // Cambia el puerto a 3001 si no está definido en el entorno
-app.get('/', (req, res) => {
-  res.send('dokku');
-}
-);
-
 
 
 const HTTPS_PORT = 3443; // Puerto seguro
@@ -30,10 +24,29 @@ const sslOptions = {
 
 // Middleware
 app.use(cors({
-  origin: 'https://localhost', // Ajusta si usas un dominio diferente
+  origin: (origin, callback) => {
+    if (!origin || origin.includes('localhost')) {
+      callback(null, true);
+    } else {
+      callback(new Error('No permitido por CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type']
 }));
+
+app.get('/', (req, res) => {
+  res.send('dokku');
+});
+
+
+
+app.use((req, res, next) => {
+  const host = req.headers.host; // ej: cliente1.localhost:3443
+  const subdomain = host.split('.')[0]; // "cliente1"
+  req.tenant = subdomain;
+  next();
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

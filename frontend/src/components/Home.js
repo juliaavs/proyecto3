@@ -19,7 +19,7 @@ const Home = ({ searchTerm }) => {
     }
 
     // Obtener todas las películas del usuario
-    fetch(`https://localhost:3001/api/peliculas?usuarioId=${usuarioId}`)
+    fetch(`https://localhost:3443/api/peliculas?usuarioId=${usuarioId}`)
       .then((res) => res.json())
       .then((data) => {
         setPeliculas(data);
@@ -48,7 +48,7 @@ const Home = ({ searchTerm }) => {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:3001/api/peliculas/${id}`, {
+        fetch(`https://localhost:3443/api/peliculas/${id}`, {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ usuarioId }),
@@ -159,7 +159,7 @@ const Home = ({ searchTerm }) => {
                       <div className="movie-poster">
                         {peli.imagen ? (
                           <img
-                            src={`http://localhost:3001${peli.imagen.startsWith('/') ? '' : '/'}${peli.imagen}`}
+                            src={`https://localhost:3443${peli.imagen.startsWith('/') ? '' : '/'}${peli.imagen}`}
                             alt={peli.nombre}
                           />
                         ) : (

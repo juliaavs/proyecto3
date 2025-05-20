@@ -36,7 +36,7 @@ function EditarPelicula() {
     const data = new FormData();
     Object.keys(formData).forEach((key) => data.append(key, formData[key]));
   
-    fetch(`https://localhost:3001/api/peliculas/${id}`, {
+    fetch(`https://localhost:3443/api/peliculas/${id}`, {
       method: 'PUT',
       body: data,
     })

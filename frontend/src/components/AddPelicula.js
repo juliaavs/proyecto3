@@ -67,7 +67,7 @@ function AddPelicula() {
       console.log(pair[0] + ':', pair[1]);
     }
   
-    fetch('https://localhost:3001/api/peliculas/add', {
+    fetch('https://localhost:3443/api/peliculas/add', {
       method: 'POST',
       body: data,
     })
@@ -183,6 +183,7 @@ function AddPelicula() {
           ></textarea>
         </div>
         <button type="submit" className="btn btn-primary">Guardar</button>
+        <button type="button" className="btn btn-secondary" onClick={() => navigate('/home')}>Cancelar</button>
       </form>
     </div>
   );

@@ -9,7 +9,7 @@ const DetallePelicula = () => {
 
   useEffect(() => {
     // Obtener los detalles de la película desde el backend
-    fetch(`https://localhost:3001/api/peliculas/${id}`)
+    fetch(`https://localhost:3443/api/peliculas/${id}`)
       .then((res) => res.json())
       .then((data) => setPelicula(data))
       .catch((err) => console.error('Error al obtener los detalles de la película:', err));
@@ -28,7 +28,7 @@ const DetallePelicula = () => {
         <div className="detalle-image">
           {pelicula.imagen ? (
             <img
-              src={`http://localhost:3001${pelicula.imagen.startsWith('/') ? '' : '/'}${pelicula.imagen}`}
+              src={`https://localhost:3443${pelicula.imagen.startsWith('/') ? '' : '/'}${pelicula.imagen}`}
               alt={pelicula.nombre}
             />
           ) : (

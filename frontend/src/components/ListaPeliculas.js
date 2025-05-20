@@ -14,7 +14,7 @@ function ListaPeliculas() {
   }, []);
 
   const fetchPeliculas = () => {
-    fetch('https://localhost:3001/api/peliculas')
+    fetch('https://localhost:3443/api/peliculas')
       .then(res => res.json())
       .then(data => setPeliculas(data))
       .catch(err => console.error('Error al obtener películas:', err));
@@ -42,7 +42,7 @@ function ListaPeliculas() {
   };
 
   const eliminarPelicula = (id) => {
-    fetch(`http://localhost:3001/api/peliculas/${id}`, {
+    fetch(`http://localhost:3443/api/peliculas/${id}`, {
       method: 'DELETE'
     })
       .then(res => {
@@ -78,7 +78,7 @@ function ListaPeliculas() {
             <h2>{peli.nombre}</h2>
             {peli.imagen && (
               <img
-                src={`http://localhost:3001/${peli.imagen.replace(/^\/?/, '')}`}
+                src={`https://localhost:3443/${peli.imagen.replace(/^\/?/, '')}`}
                 alt="Carátula"
                 className="pelicula-imagen"
               />
